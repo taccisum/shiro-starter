@@ -11,6 +11,7 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -45,9 +46,11 @@ public class SessionModeIntegrationTest {
                 .addFilters((Filter) webApplicationContext.getBean(ShiroFilterFactoryBean.class).getObject())
                 .build();
         this.session = new MockHttpSession();
-        doLogin()
+        MvcResult result = doLogin()
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", is(true)));
+                .andExpect(jsonPath("$", is(true)))
+                .andReturn();
+        assertThat(result.getResponse().getHeader("Set-Cookie")).isNotEmpty().contains("rememberMe", "Max-Age", "Expires");
     }
 
     @Test
