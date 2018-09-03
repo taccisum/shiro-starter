@@ -1,0 +1,3 @@
+shiro:
+  web:
+    mode: session

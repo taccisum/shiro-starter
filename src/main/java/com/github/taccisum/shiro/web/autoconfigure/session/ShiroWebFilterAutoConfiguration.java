@@ -1,4 +1,4 @@
-package com.github.taccisum.shiro.web.autoconfigure;
+package com.github.taccisum.shiro.web.autoconfigure.session;
 
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.spring.web.config.AbstractShiroWebFilterConfiguration;
@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
  * @since 2018/9/3
  */
 @Configuration
-@ConditionalOnProperty(name = "shiro.web.enabled", matchIfMissing = true)
+@ConditionalOnProperty(name = "shiro.web.mode", havingValue = "SESSION", matchIfMissing = true)
 public class ShiroWebFilterAutoConfiguration extends AbstractShiroWebFilterConfiguration {
 
     @Bean

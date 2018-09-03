@@ -1,4 +1,4 @@
-package com.github.taccisum.shiro.web.autoconfigure;
+package com.github.taccisum.shiro.web.autoconfigure.session;
 
 import org.apache.shiro.authc.Authenticator;
 import org.apache.shiro.authc.pam.AuthenticationStrategy;
@@ -22,7 +22,7 @@ import java.util.List;
  * @since 2018/9/3
  */
 @Configuration
-@ConditionalOnProperty(name = "shiro.web.enabled", matchIfMissing = true)
+@ConditionalOnProperty(name = "shiro.web.mode", havingValue = "SESSION", matchIfMissing = true)
 public class ShiroWebAutoConfiguration extends AbstractShiroWebConfiguration {
     @Bean
     @ConditionalOnMissingBean

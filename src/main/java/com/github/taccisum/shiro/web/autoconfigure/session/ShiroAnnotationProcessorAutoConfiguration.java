@@ -1,4 +1,4 @@
-package com.github.taccisum.shiro.web.autoconfigure;
+package com.github.taccisum.shiro.web.autoconfigure.session;
 
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.config.AbstractShiroAnnotationProcessorConfiguration;
@@ -16,7 +16,7 @@ import org.springframework.context.annotation.DependsOn;
  */
 @SuppressWarnings("SpringFacetCodeInspection")
 @Configuration
-@ConditionalOnProperty(name = "shiro.annotations.enabled", matchIfMissing = true)
+@ConditionalOnProperty(name = "shiro.web.mode", havingValue = "SESSION", matchIfMissing = true)
 public class ShiroAnnotationProcessorAutoConfiguration extends AbstractShiroAnnotationProcessorConfiguration {
 
     @Bean
