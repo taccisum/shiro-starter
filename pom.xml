@@ -51,6 +51,13 @@
             <optional>true</optional>
         </dependency>
         <!-- optional end -->
+
+        <!-- test start -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+        </dependency>
+        <!-- test end -->
     </dependencies>
 
     <repositories>

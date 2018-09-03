@@ -1,0 +1,11 @@
+logging:
+  level:
+    org.apache.shiro: trace
+
+---
+spring:
+  profiles: session-mode
+shiro:
+  web:
+    mode: session
+
