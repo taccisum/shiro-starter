@@ -2,9 +2,4 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 com.github.taccisum.shiro.web.autoconfigure.session.ShiroWebAutoConfiguration,\
 com.github.taccisum.shiro.web.autoconfigure.session.ShiroBeanAutoConfiguration,\
 com.github.taccisum.shiro.web.autoconfigure.session.ShiroWebFilterAutoConfiguration,\
-com.github.taccisum.shiro.web.autoconfigure.session.ShiroAnnotationProcessorAutoConfiguration,\
-com.github.taccisum.shiro.web.autoconfigure.token.ShiroWebAutoConfiguration,\
-com.github.taccisum.shiro.web.autoconfigure.token.ShiroBeanAutoConfiguration,\
-com.github.taccisum.shiro.web.autoconfigure.token.ShiroWebFilterAutoConfiguration,\
-com.github.taccisum.shiro.web.autoconfigure.token.ShiroAnnotationProcessorAutoConfiguration
-
+com.github.taccisum.shiro.web.autoconfigure.session.ShiroAnnotationProcessorAutoConfiguration
