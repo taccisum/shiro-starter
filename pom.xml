@@ -8,6 +8,12 @@
     <artifactId>shiro-starter</artifactId>
     <version>2.0-SNAPSHOT</version>
 
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.5.9.RELEASE</version>
+    </parent>
+
     <developers>
         <developer>
             <name>taccisum</name>
@@ -19,6 +25,33 @@
         <url>https://github.com/taccisum/shiro-starter</url>
         <connection>https://github.com/taccisum/shiro-starter.git</connection>
     </scm>
+
+    <dependencies>
+        <!-- compile start -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-spring</artifactId>
+            <version>1.4.0-RC2</version>
+        </dependency>
+        <!-- compile end -->
+
+        <!-- optional start -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <!-- optional end -->
+    </dependencies>
 
     <repositories>
         <repository>
