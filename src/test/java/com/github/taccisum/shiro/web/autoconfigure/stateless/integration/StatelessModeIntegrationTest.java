@@ -3,6 +3,7 @@ package com.github.taccisum.shiro.web.autoconfigure.stateless.integration;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -102,8 +103,8 @@ public class StatelessModeIntegrationTest {
                     .header("token", token)
                     .accept("application/json"))
                     .andDo(print())
-                    .andExpect(jsonPath("$", is("staff")))
             ;
+            Assert.fail();
         } catch (NestedServletException e) {
             assertThat(e.getCause()).isInstanceOf(AuthorizationException.class);
             assertThat(e.getMessage()).contains("Subject does not have role [user]");

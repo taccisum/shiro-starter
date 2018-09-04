@@ -10,6 +10,6 @@ import org.springframework.context.annotation.Configuration;
  */
 @SuppressWarnings("SpringFacetCodeInspection")
 @Configuration
-@ConditionalOnProperty(name = "shiro.annotations.enabled", matchIfMissing = true)
+@ConditionalOnProperty(name = "shiro.web.mode", havingValue = "stateless")
 public class ShiroAnnotationProcessorAutoConfiguration extends AbstractShiroAnnotationProcessorAutoConfiguration {
 }
