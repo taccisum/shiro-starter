@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
  * @since 2018/9/3
  */
 @Configuration
-@ConditionalOnProperty(name = "shiro.web.mode", havingValue = "stateless")
+@ConditionalOnProperty(name = "shiro.web.mode", havingValue = "STATELESS")
 public class ShiroWebAutoConfiguration extends AbstractShiroWebAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
