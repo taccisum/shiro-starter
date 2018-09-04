@@ -57,7 +57,7 @@ public class StatelessModeIntegrationTest {
                 .header("token", token)
                 .accept("application/json"))
                 .andDo(print())
-                .andExpect(jsonPath("$.username", is("tac")))
+                .andExpect(jsonPath("$.username", is("cd6765734a16476b9bd4b0513b3fb8e4")))
         ;
     }
 
@@ -93,6 +93,16 @@ public class StatelessModeIntegrationTest {
             assertThat(e.getCause()).isInstanceOf(AuthorizationException.class);
             assertThat(e.getMessage()).contains("Subject does not have role [user]");
         }
+    }
+
+    @Test
+    public void assertSessionNull() throws Exception {
+        mvc.perform(get("/assert_session_null")
+                .header("token", token)
+                .accept("application/json"))
+                .andDo(print())
+                .andExpect(jsonPath("$", is(true)))
+        ;
     }
 
     public String login() throws Exception {

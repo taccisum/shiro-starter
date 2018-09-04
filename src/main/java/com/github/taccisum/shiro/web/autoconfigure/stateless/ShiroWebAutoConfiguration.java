@@ -1,5 +1,7 @@
 package com.github.taccisum.shiro.web.autoconfigure.stateless;
 
+import com.github.taccisum.shiro.web.autoconfigure.stateless.support.StatelessSessionStorageEvaluator;
+import com.github.taccisum.shiro.web.autoconfigure.stateless.support.StatelessSubjectFactory;
 import org.apache.shiro.authc.Authenticator;
 import org.apache.shiro.authc.pam.AuthenticationStrategy;
 import org.apache.shiro.authz.Authorizer;
@@ -56,7 +58,7 @@ public class ShiroWebAutoConfiguration extends AbstractShiroWebConfiguration {
     @ConditionalOnMissingBean
     @Override
     protected SessionStorageEvaluator sessionStorageEvaluator() {
-        return super.sessionStorageEvaluator();
+        return new StatelessSessionStorageEvaluator();
     }
 
     @Bean
@@ -98,7 +100,7 @@ public class ShiroWebAutoConfiguration extends AbstractShiroWebConfiguration {
     @ConditionalOnMissingBean
     @Override
     protected SubjectFactory subjectFactory() {
-        return super.subjectFactory();
+        return new StatelessSubjectFactory();
     }
 
     @Bean

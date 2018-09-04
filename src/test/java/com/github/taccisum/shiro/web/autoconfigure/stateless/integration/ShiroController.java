@@ -47,4 +47,9 @@ public class ShiroController {
     public String user() {
         return "user";
     }
+
+    @GetMapping("assert_session_null")
+    public boolean assertSessionNull() {
+        return SecurityUtils.getSubject().getSession(false) == null;
+    }
 }
