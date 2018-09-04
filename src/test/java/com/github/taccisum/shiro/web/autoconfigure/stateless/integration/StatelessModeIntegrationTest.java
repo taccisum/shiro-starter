@@ -71,6 +71,15 @@ public class StatelessModeIntegrationTest {
     }
 
     @Test
+    public void infoWhenErrorToken() throws Exception {
+        mvc.perform(get("/info")
+                .header("token", "error_token")
+                .accept("application/json"))
+                .andDo(print())
+        ;
+    }
+
+    @Test
     public void staff() throws Exception {
         mvc.perform(get("/require_staff")
                 .header("token", token)
