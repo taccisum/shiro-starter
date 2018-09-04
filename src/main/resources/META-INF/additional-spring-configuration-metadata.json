@@ -34,6 +34,72 @@
       "type": "java.lang.String",
       "description": "Enable or disable session tracking via a URL parameter.  If your site requires cookies, it is recommended you disable this.",
       "defaultValue": true
+    },
+    {
+      "name": "shiro.userNativeSessionManager",
+      "type": "java.lang.Boolean",
+      "description": ".",
+      "defaultValue": false
+    },
+    {
+      "name": "shiro.sessionManager.cookie.name",
+      "type": "java.lang.String",
+      "description": ".",
+      "defaultValue": "JSESSIONID"
+    },
+    {
+      "name": "shiro.sessionManager.cookie.maxAge",
+      "type": "java.lang.Integer",
+      "description": ".",
+      "defaultValue": -1
+    },
+    {
+      "name": "shiro.sessionManager.cookie.domain",
+      "type": "java.lang.String",
+      "description": ".",
+      "defaultValue": null
+    },
+    {
+      "name": "shiro.sessionManager.cookie.path",
+      "type": "java.lang.String",
+      "description": ".",
+      "defaultValue": null
+    },
+    {
+      "name": "shiro.sessionManager.cookie.secure",
+      "type": "java.lang.String",
+      "description": ".",
+      "defaultValue": false
+    },
+    {
+      "name": "shiro.rememberMeManager.cookie.name",
+      "type": "java.lang.String",
+      "description": ".",
+      "defaultValue": "rememberMe"
+    },
+    {
+      "name": "shiro.rememberMeManager.cookie.maxAge",
+      "type": "java.lang.Integer",
+      "description": ".",
+      "defaultValue": 31536000
+    },
+    {
+      "name": "shiro.rememberMeManager.cookie.domain",
+      "type": "java.lang.String",
+      "description": ".",
+      "defaultValue": null
+    },
+    {
+      "name": "shiro.rememberMeManager.cookie.path",
+      "type": "java.lang.String",
+      "description": ".",
+      "defaultValue": null
+    },
+    {
+      "name": "shiro.rememberMeManager.cookie.secure",
+      "type": "java.lang.String",
+      "description": ".",
+      "defaultValue": false
     }
   ]
 }
