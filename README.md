@@ -25,19 +25,6 @@ public Realm realm() {
 }
 ```
 
-### shiroFilterChainDefinition
-```java
-@Bean
-public ShiroFilterChainDefinition shiroFilterChainDefinition() {
-    DefaultShiroFilterChainDefinition chainDefinition = new DefaultShiroFilterChainDefinition();
-    chainDefinition.addPathDefinition("/login", "anon");
-    chainDefinition.addPathDefinition("/logout", "anon");
-    chainDefinition.addPathDefinition("/**", "authc");
-    return chainDefinition;
-}
-```
-
-
 ## Stateless模式最小配置
 
 ### application.yml
@@ -58,18 +45,25 @@ public Realm realm() {
 }
 ```
 
-### shiroFilterChainDefinition
-```java
-@Bean
-public ShiroFilterChainDefinition shiroFilterChainDefinition() {
-    DefaultShiroFilterChainDefinition chainDefinition = new DefaultShiroFilterChainDefinition();
-    chainDefinition.addPathDefinition("/login", "anon");
-    chainDefinition.addPathDefinition("/**", "authc");
-    return chainDefinition;
-}
+然后通过`header`或`parameter`传入token={hash}，`StatelessUserFilter`会自动调用`subject.login(token)`为每一次无状态请求进行认证。
+
+
+## 配置shiro filter chain
+
+### application.yml
+```yaml
+shiro:
+  web:
+    filter-chain-definition:
+      anon:
+        - /login
+        - /logout
+      authc:
+        - /**
 ```
 
-然后通过`header`或`parameter`传入token={hash}，`StatelessUserFilter`会自动调用`subject.login(token)`为每一次无状态请求进行认证。
+**注意事项**
+ - 配置顺序会影响过滤器执行顺序。
 
 
 ## 其它问题
