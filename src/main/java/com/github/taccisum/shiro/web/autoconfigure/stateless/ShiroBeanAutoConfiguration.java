@@ -1,12 +1,7 @@
 package com.github.taccisum.shiro.web.autoconfigure.stateless;
 
-import org.apache.shiro.event.EventBus;
-import org.apache.shiro.spring.LifecycleBeanPostProcessor;
-import org.apache.shiro.spring.ShiroEventBusBeanPostProcessor;
-import org.apache.shiro.spring.config.AbstractShiroBeanConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import com.github.taccisum.shiro.web.autoconfigure.AbstractShiroBeanAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -15,25 +10,5 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ConditionalOnProperty(name = "shiro.web.enabled", matchIfMissing = true)
-public class ShiroBeanAutoConfiguration extends AbstractShiroBeanConfiguration {
-    @Bean
-    @ConditionalOnMissingBean
-    @Override
-    public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
-        return super.lifecycleBeanPostProcessor();
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @Override
-    public EventBus eventBus() {
-        return super.eventBus();
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @Override
-    public ShiroEventBusBeanPostProcessor shiroEventBusAwareBeanPostProcessor() {
-        return super.shiroEventBusAwareBeanPostProcessor();
-    }
+public class ShiroBeanAutoConfiguration extends AbstractShiroBeanAutoConfiguration {
 }
