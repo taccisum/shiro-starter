@@ -6,5 +6,5 @@ package com.github.taccisum.shiro.web;
  */
 public enum ShiroMode {
     SESSION,
-    TOKEN
+    STATELESS
 }

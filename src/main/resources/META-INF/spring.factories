@@ -3,4 +3,8 @@ com.github.taccisum.shiro.web.autoconfigure.session.ShiroWebAutoConfiguration,\
 com.github.taccisum.shiro.web.autoconfigure.session.ShiroBeanAutoConfiguration,\
 com.github.taccisum.shiro.web.autoconfigure.session.ShiroWebFilterAutoConfiguration,\
 com.github.taccisum.shiro.web.autoconfigure.session.ShiroAnnotationProcessorAutoConfiguration,\
+com.github.taccisum.shiro.web.autoconfigure.stateless.ShiroWebAutoConfiguration,\
+com.github.taccisum.shiro.web.autoconfigure.stateless.ShiroBeanAutoConfiguration,\
+com.github.taccisum.shiro.web.autoconfigure.stateless.ShiroWebFilterAutoConfiguration,\
+com.github.taccisum.shiro.web.autoconfigure.stateless.ShiroAnnotationProcessorAutoConfiguration,\
 com.github.taccisum.shiro.web.autoconfigure.RestModeAutoConfiguration

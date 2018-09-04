@@ -9,3 +9,9 @@ shiro:
   web:
     mode: session
 
+---
+spring:
+  profiles: stateless-mode
+shiro:
+  web:
+    mode: stateless
