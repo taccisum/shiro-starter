@@ -45,7 +45,7 @@ public class StatelessUserFilter extends UserFilter {
             writer.write("unauthenticated user");
             return false;
         }
-        this.saveRequestAndRedirectToLogin(request, response);
+        this.redirectToLogin(request, response);
         return false;
     }
 

@@ -1,5 +1,6 @@
 package com.github.taccisum.shiro.web.autoconfigure.stateless.integration;
 
+import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.junit.Before;
@@ -15,6 +16,7 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.util.NestedServletException;
 
 import javax.servlet.Filter;
+import javax.servlet.ServletException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -72,11 +74,15 @@ public class StatelessModeIntegrationTest {
 
     @Test
     public void infoWhenErrorToken() throws Exception {
-        mvc.perform(get("/info")
-                .header("token", "error_token")
-                .accept("application/json"))
-                .andDo(print())
-        ;
+        try {
+            mvc.perform(get("/info")
+                    .header("token", "error_token")
+                    .accept("application/json"))
+                    .andDo(print())
+            ;
+        } catch (ServletException e) {
+            assertThat(e.getCause()).isInstanceOf(UnknownAccountException.class);
+        }
     }
 
     @Test
