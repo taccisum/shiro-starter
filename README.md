@@ -52,7 +52,7 @@ shiro:
 @Bean
 public Realm realm() {
     SimpleHashRealm realm = new SimpleHashRealm();
-    realm.setCredentialsMatcher(new StatelessCredentialsMatcher());
+    realm.setCredentialsMatcher(new StatelessCredentialsMatcher());     //这行不能少，否则在token模式下凭证校验会不通过
     realm.addAccount("cd6765734a16476b9bd4b0513b3fb8e4", "staff");
     return realm;
 }
@@ -70,6 +70,11 @@ public ShiroFilterChainDefinition shiroFilterChainDefinition() {
 ```
 
 然后通过`header`或`parameter`传入token={hash}，`StatelessUserFilter`会自动调用`subject.login(token)`为每一次无状态请求进行认证。
+
+
+## 其它问题
+
+### Stateless模式下的认证异常处理
 
 
 
