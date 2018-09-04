@@ -8,7 +8,6 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.PrintWriter;
-import java.util.Objects;
 
 /**
  * @author tac - liaojf@cheegu.com
@@ -38,8 +37,8 @@ public class StatelessUserFilter extends UserFilter {
     }
 
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
-        if (isAjax(request)) {
-            // disable redirect
+        if (!acceptHtml(request)) {
+            // disable redirect if client does not accept text/html
             // todo::
             PrintWriter writer = response.getWriter();
             writer.write("unauthenticated user");
@@ -49,8 +48,8 @@ public class StatelessUserFilter extends UserFilter {
         return false;
     }
 
-    private boolean isAjax(ServletRequest request) {
+    private boolean acceptHtml(ServletRequest request) {
         HttpServletRequest req = (HttpServletRequest) request;
-        return Objects.equals(req.getHeader("Accept"), "application/json");
+        return req.getHeader("Accept").contains("text/html");
     }
 }
