@@ -6,4 +6,5 @@ com.github.taccisum.shiro.web.autoconfigure.session.ShiroAnnotationProcessorAuto
 com.github.taccisum.shiro.web.autoconfigure.stateless.ShiroWebAutoConfiguration,\
 com.github.taccisum.shiro.web.autoconfigure.stateless.ShiroBeanAutoConfiguration,\
 com.github.taccisum.shiro.web.autoconfigure.stateless.ShiroWebFilterAutoConfiguration,\
-com.github.taccisum.shiro.web.autoconfigure.stateless.ShiroAnnotationProcessorAutoConfiguration
+com.github.taccisum.shiro.web.autoconfigure.stateless.ShiroAnnotationProcessorAutoConfiguration,\
+com.github.taccisum.shiro.web.autoconfigure.ShiroWebAutoConfiguration
