@@ -40,7 +40,7 @@ public class ShiroWebAutoConfiguration extends AbstractShiroWebAutoConfiguration
     }
 
     @Bean
-    @ConditionalOnMissingBean
+    @ConditionalOnMissingBean(name = "sessionCookieTemplate")
     @Override
     protected Cookie sessionCookieTemplate() {
         return null;
@@ -54,7 +54,7 @@ public class ShiroWebAutoConfiguration extends AbstractShiroWebAutoConfiguration
     }
 
     @Bean
-    @ConditionalOnMissingBean
+    @ConditionalOnMissingBean(name = "rememberMeCookieTemplate")
     @Override
     protected Cookie rememberMeCookieTemplate() {
         return null;
