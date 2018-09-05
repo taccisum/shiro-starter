@@ -36,6 +36,12 @@
       "defaultValue": true
     },
     {
+      "name": "shiro.sessionManager.deleteInvalidSessions",
+      "type": "java.lang.Boolean",
+      "description": ".",
+      "defaultValue": true
+    },
+    {
       "name": "shiro.userNativeSessionManager",
       "type": "java.lang.Boolean",
       "description": ".",
@@ -44,25 +50,25 @@
     {
       "name": "shiro.sessionManager.cookie.name",
       "type": "java.lang.String",
-      "description": ".",
+      "description": "specify session cookie name.",
       "defaultValue": "JSESSIONID"
     },
     {
       "name": "shiro.sessionManager.cookie.maxAge",
       "type": "java.lang.Integer",
-      "description": ".",
+      "description": "specify session cookie max age.",
       "defaultValue": -1
     },
     {
       "name": "shiro.sessionManager.cookie.domain",
       "type": "java.lang.String",
-      "description": ".",
+      "description": "specify session cookie domain.",
       "defaultValue": null
     },
     {
       "name": "shiro.sessionManager.cookie.path",
       "type": "java.lang.String",
-      "description": ".",
+      "description": "specify session cookie path.",
       "defaultValue": null
     },
     {
@@ -74,25 +80,25 @@
     {
       "name": "shiro.rememberMeManager.cookie.name",
       "type": "java.lang.String",
-      "description": ".",
+      "description": "specify remember me cookie name.",
       "defaultValue": "rememberMe"
     },
     {
       "name": "shiro.rememberMeManager.cookie.maxAge",
       "type": "java.lang.Integer",
-      "description": ".",
+      "description": "specify remember me cookie max age(seconds).",
       "defaultValue": 31536000
     },
     {
       "name": "shiro.rememberMeManager.cookie.domain",
       "type": "java.lang.String",
-      "description": ".",
+      "description": "specify remember me cookie domain.",
       "defaultValue": null
     },
     {
       "name": "shiro.rememberMeManager.cookie.path",
       "type": "java.lang.String",
-      "description": ".",
+      "description": "specify remember me cookie path.",
       "defaultValue": null
     },
     {
