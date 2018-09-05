@@ -1,5 +1,6 @@
 package com.github.taccisum.shiro.web.autoconfigure.stateless.integration;
 
+import com.github.taccisum.shiro.web.autoconfigure.stateless.support.StatelessCredentialsMatcher;
 import com.github.taccisum.shiro.web.autoconfigure.stateless.support.StatelessSessionStorageEvaluator;
 import com.github.taccisum.shiro.web.autoconfigure.stateless.support.StatelessSubjectFactory;
 import com.github.taccisum.shiro.web.autoconfigure.stateless.support.StatelessUserFilter;
@@ -8,6 +9,8 @@ import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.mgt.RememberMeManager;
 import org.apache.shiro.mgt.SessionStorageEvaluator;
 import org.apache.shiro.mgt.SubjectFactory;
+import org.apache.shiro.realm.AuthorizingRealm;
+import org.apache.shiro.realm.Realm;
 import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.servlet.Cookie;
@@ -74,6 +77,7 @@ public class StatelessModeIntegrationTest {
         assertThat((Cookie) context.getBean("sessionCookieTemplate")).isNull();
         assertThat(context.getBean(RememberMeManager.class)).isNull();
         assertThat((Cookie) context.getBean("rememberMeCookieTemplate")).isNull();
+        assertThat(((AuthorizingRealm) context.getBean(Realm.class)).getCredentialsMatcher()).isInstanceOf(StatelessCredentialsMatcher.class);
         assertThat(context.getBean(SubjectFactory.class)).isInstanceOf(StatelessSubjectFactory.class);
         assertThat(context.getBean(ShiroFilterFactoryBean.class).getFilters().get("authc")).isInstanceOf(StatelessUserFilter.class);
     }
