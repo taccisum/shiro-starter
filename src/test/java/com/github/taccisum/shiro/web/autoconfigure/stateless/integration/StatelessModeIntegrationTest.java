@@ -1,8 +1,17 @@
 package com.github.taccisum.shiro.web.autoconfigure.stateless.integration;
 
+import com.github.taccisum.shiro.web.autoconfigure.stateless.support.StatelessSessionStorageEvaluator;
+import com.github.taccisum.shiro.web.autoconfigure.stateless.support.StatelessSubjectFactory;
+import com.github.taccisum.shiro.web.autoconfigure.stateless.support.StatelessUserFilter;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authz.AuthorizationException;
+import org.apache.shiro.mgt.RememberMeManager;
+import org.apache.shiro.mgt.SessionStorageEvaluator;
+import org.apache.shiro.mgt.SubjectFactory;
+import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.web.servlet.Cookie;
+import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,13 +46,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class StatelessModeIntegrationTest {
     private MockMvc mvc;
     @Autowired
-    private WebApplicationContext webApplicationContext;
+    private WebApplicationContext context;
     private String token;
 
     @Before
     public void setUp() throws Exception {
-        mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
-                .addFilters((Filter) webApplicationContext.getBean(ShiroFilterFactoryBean.class).getObject())
+        mvc = MockMvcBuilders.webAppContextSetup(context)
+                .addFilters((Filter) context.getBean(ShiroFilterFactoryBean.class).getObject())
                 .build();
         token = login();
     }
@@ -53,6 +62,20 @@ public class StatelessModeIntegrationTest {
         assertThat(mvc).isNotNull();
         assertThat(token).isNotEmpty();
         assertThat(token.length()).isEqualTo(32);
+    }
+
+    @Test
+    public void testBean() throws Exception {
+        assertThat(context.getBean(SessionStorageEvaluator.class)).isInstanceOf(StatelessSessionStorageEvaluator.class);
+        SessionManager sessionManager = (SessionManager) context.getBean("sessionManager");
+        if (sessionManager instanceof DefaultWebSessionManager) {
+            assertThat(((DefaultWebSessionManager) sessionManager).isSessionIdCookieEnabled()).isFalse();
+        }
+        assertThat((Cookie) context.getBean("sessionCookieTemplate")).isNull();
+        assertThat(context.getBean(RememberMeManager.class)).isNull();
+        assertThat((Cookie) context.getBean("rememberMeCookieTemplate")).isNull();
+        assertThat(context.getBean(SubjectFactory.class)).isInstanceOf(StatelessSubjectFactory.class);
+        assertThat(context.getBean(ShiroFilterFactoryBean.class).getFilters().get("authc")).isInstanceOf(StatelessUserFilter.class);
     }
 
     @Test
