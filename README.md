@@ -5,6 +5,10 @@
 
 由于官方的[`shiro-spring-boot-web-starter`](https://shiro.apache.org/spring-boot.html)提供的功能过于简单，因此这里又造了一个加强版的轮子。
 
+该starter提供两种不同的模式：Session模式和Stateless模式。
+
+  - Session模式[默认]：与Shiro默认提供的starter无二
+  - Stateless模式：无状态的模式，适用于token认证的方式，在该模式下shiro所有与session、cookie相关的操作及配置都将无效
 
 # 版本信息
 
