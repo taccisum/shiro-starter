@@ -3,3 +3,5 @@ install: mvn install -DskipTests=true -Dmaven.javadoc.skip=true
 script: mvn test
 jdk:
   - openjdk8
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
