@@ -21,6 +21,7 @@ public class JWTManager {
     private JWTAlgorithmProvider algorithm;
     private String issuer = "access_token";
     private PayloadTemplate payloadTemplate;
+    private JWTVerifier verifier;
 
     public JWTManager(String issuer, PayloadTemplate payloadTemplate) {
         this(issuer, payloadTemplate, DEFAULT_EXPIRES_MINUTES);
@@ -74,10 +75,7 @@ public class JWTManager {
     }
 
     public DecodedJWT verify(String jwt) throws JWTVerificationException {
-        JWTVerifier verifier = JWT.require(algorithm.get())
-                .withIssuer(issuer)
-                .build();
-        return verifier.verify(jwt);
+        return getVerifier().verify(jwt);
     }
 
     public Payload parsePayload(DecodedJWT decodedJWT) {
@@ -108,6 +106,15 @@ public class JWTManager {
 
     static Date calculateExpiresTime(int expiresMinutes) {
         return new Date(new Date().getTime() + expiresMinutes * 60 * 1000);
+    }
+
+    private JWTVerifier getVerifier() {
+        if (this.verifier == null) {
+            this.verifier = JWT.require(algorithm.get())
+                    .withIssuer(issuer)
+                    .build();
+        }
+        return this.verifier;
     }
 
     private static String newJWTId() {
