@@ -1,5 +1,5 @@
 [![Build Status](https://www.travis-ci.org/taccisum/shiro-starter.svg?branch=master)](https://www.travis-ci.org/taccisum/shiro-starter)
-
+[![codecov](https://codecov.io/gh/taccisum/shiro-starter/branch/master/graph/badge.svg)](https://codecov.io/gh/taccisum/shiro-starter)
 
 # 简介
 
