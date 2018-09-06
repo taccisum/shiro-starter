@@ -4,7 +4,9 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.github.taccisum.shiro.web.autoconfigure.stateless.support.jwt.exception.ParsePayloadException;
 
 import java.util.Date;
 import java.util.Objects;
@@ -81,20 +83,24 @@ public class JWTManager {
     public Payload parsePayload(DecodedJWT decodedJWT) {
         Payload payload = new Payload();
         payloadTemplate.getFieldMap().forEach((k, v) -> {
+            Claim claim = decodedJWT.getClaim(k);
+            if (claim.isNull()) {
+                throw new ParsePayloadException(String.format("there is not field %s[%s] on payload. check if you JWT is obsoleted.", k, v));
+            }
             if (Objects.equals(v, Boolean.class)) {
-                payload.put(k, decodedJWT.getClaim(k).asBoolean());
+                payload.put(k, claim.asBoolean());
             } else if (Objects.equals(v, Integer.class)) {
-                payload.put(k, decodedJWT.getClaim(k).asInt());
+                payload.put(k, claim.asInt());
             } else if (Objects.equals(v, Long.class)) {
-                payload.put(k, decodedJWT.getClaim(k).asLong());
+                payload.put(k, claim.asLong());
             } else if (Objects.equals(v, Double.class)) {
-                payload.put(k, decodedJWT.getClaim(k).asDouble());
+                payload.put(k, claim.asDouble());
             } else if (Objects.equals(v, Date.class)) {
-                payload.put(k, decodedJWT.getClaim(k).asDate());
+                payload.put(k, claim.asDate());
             } else if (Objects.equals(v, String.class)) {
-                payload.put(k, decodedJWT.getClaim(k).asString());
+                payload.put(k, claim.asString());
             } else {
-                payload.put(k, decodedJWT.getClaim(k).asString());
+                payload.put(k, claim.asString());
             }
         });
         return payload;
