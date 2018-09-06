@@ -2,12 +2,14 @@ package com.github.taccisum.shiro.web.autoconfigure.stateless.support.jwt;
 
 import com.auth0.jwt.algorithms.Algorithm;
 
+import java.util.UUID;
+
 /**
  * @author tac - liaojf@cheegu.com
  * @since 2018/9/6
  */
 public class DefaultJWTAlgorithmProvider implements JWTAlgorithmProvider {
-    private static final String SECRET = "secret_njdkbjwo3rt*(Y!@$Y*($IUFV)(!";
+    private static final String SECRET = UUID.randomUUID().toString();
     private static Algorithm algorithm;
 
     @Override

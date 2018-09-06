@@ -161,10 +161,12 @@ protected JWTAlgorithmProvider jwtAlgorithmProvider() {
 
 #### 注意事项
  - `SimpleJWTRealm`不支持登出操作，每个JWT都有固定的有效时间，无法强制使其失效
+ - 默认的`JWTAlgorithmProvider`将在每次应用启动时生成一个UUID作为密钥，因此在应用重启后，此前生成的JWT会全部失效
 
 ## 其它问题
 
 ### Stateless模式下的认证异常处理
 
 
+## 配置一览
 
