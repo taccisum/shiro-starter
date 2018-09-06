@@ -37,6 +37,10 @@ public class JWTManager {
         this.algorithm = algorithm;
     }
 
+    public PayloadTemplate getPayloadTemplate() {
+        return payloadTemplate;
+    }
+
     public String create(Payload payload) {
         payload.forEach((k, v) -> {
             payloadTemplate.check().hasField(k, v);

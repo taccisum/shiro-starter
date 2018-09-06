@@ -17,6 +17,7 @@ import java.util.Collection;
 
 /**
  * todo:: unit test
+ *
  * @author tac - liaojf@cheegu.com
  * @since 2018/9/5
  */
@@ -52,11 +53,13 @@ public class SimpleJWTRealm extends AuthorizingRealm {
         } catch (JWTVerificationException e) {
             throw new InvalidTokenException(token);
         }
-        Collection<String> roles = split(payload.get("roles").toString());
-        Collection<String> permissions = split(payload.get("permissions").toString());
         SimpleAuthorizationInfo authzInfo = new SimpleAuthorizationInfo();
-        authzInfo.addRoles(roles);
-        authzInfo.addStringPermissions(permissions);
+        if (jwtManager.getPayloadTemplate().hasField("roles", String.class)) {
+            authzInfo.addRoles(split(payload.get("roles").toString()));
+        }
+        if (jwtManager.getPayloadTemplate().hasField("permissions", String.class)) {
+            authzInfo.addStringPermissions(split(payload.get("permissions").toString()));
+        }
         return authzInfo;
     }
 
