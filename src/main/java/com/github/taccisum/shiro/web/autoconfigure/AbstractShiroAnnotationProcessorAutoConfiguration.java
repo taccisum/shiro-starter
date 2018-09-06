@@ -26,7 +26,6 @@ public abstract class AbstractShiroAnnotationProcessorAutoConfiguration extends 
     @ConditionalOnMissingBean
     @Override
     public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager) {
-        // todo::
         return super.authorizationAttributeSourceAdvisor(securityManager);
     }
 }
