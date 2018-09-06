@@ -36,7 +36,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 /**
@@ -95,11 +94,14 @@ public class StatelessModeIntegrationTest {
 
     @Test
     public void infoWhenUnauthenticated() throws Exception {
-        mvc.perform(get("/info")
-                .accept("application/json"))
-                .andDo(print())
-                .andExpect(content().string("unauthenticated user"))
-        ;
+        try {
+            mvc.perform(get("/info")
+                    .accept("application/json"))
+                    .andDo(print())
+            ;
+        } catch (ServletException e) {
+            assertThat(e.getMessage().contains("unauthenticated user"));
+        }
     }
 
     @Test

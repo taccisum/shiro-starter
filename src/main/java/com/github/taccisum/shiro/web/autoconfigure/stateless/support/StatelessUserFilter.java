@@ -1,13 +1,13 @@
 package com.github.taccisum.shiro.web.autoconfigure.stateless.support;
 
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.UnauthenticatedException;
 import org.apache.shiro.web.filter.authc.UserFilter;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import java.io.PrintWriter;
 
 /**
  * @author tac - liaojf@cheegu.com
@@ -38,11 +38,8 @@ public class StatelessUserFilter extends UserFilter {
 
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
         if (!acceptHtml(request)) {
-            // disable redirect if client does not accept text/html
-            // todo::
-            PrintWriter writer = response.getWriter();
-            writer.write("unauthenticated user");
-            return false;
+            // handle onAccessDenied() by spring DispatcherServlet via throw exception here
+            throw new UnauthenticatedException("unauthenticated user");
         }
         this.redirectToLogin(request, response);
         return false;
