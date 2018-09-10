@@ -38,73 +38,73 @@
     {
       "name": "shiro.sessionManager.deleteInvalidSessions",
       "type": "java.lang.Boolean",
-      "description": ".",
+      "description": "Remove invalid session from session storage.",
       "defaultValue": true
     },
     {
       "name": "shiro.userNativeSessionManager",
       "type": "java.lang.Boolean",
-      "description": ".",
+      "description": "If enabled Shiro will manage the HTTP sessions instead of the container.",
       "defaultValue": false
     },
     {
       "name": "shiro.sessionManager.cookie.name",
       "type": "java.lang.String",
-      "description": "specify session cookie name.",
+      "description": "Specify session cookie name.",
       "defaultValue": "JSESSIONID"
     },
     {
       "name": "shiro.sessionManager.cookie.maxAge",
       "type": "java.lang.Integer",
-      "description": "specify session cookie max age.",
+      "description": "Specify session cookie max age.",
       "defaultValue": -1
     },
     {
       "name": "shiro.sessionManager.cookie.domain",
       "type": "java.lang.String",
-      "description": "specify session cookie domain.",
+      "description": "Specify session cookie domain.",
       "defaultValue": null
     },
     {
       "name": "shiro.sessionManager.cookie.path",
       "type": "java.lang.String",
-      "description": "specify session cookie path.",
+      "description": "Specify session cookie path.",
       "defaultValue": null
     },
     {
       "name": "shiro.sessionManager.cookie.secure",
       "type": "java.lang.String",
-      "description": ".",
+      "description": "Session cookie secure flag.",
       "defaultValue": false
     },
     {
       "name": "shiro.rememberMeManager.cookie.name",
       "type": "java.lang.String",
-      "description": "specify remember me cookie name.",
+      "description": "Specify remember me cookie name.",
       "defaultValue": "rememberMe"
     },
     {
       "name": "shiro.rememberMeManager.cookie.maxAge",
       "type": "java.lang.Integer",
-      "description": "specify remember me cookie max age(seconds).",
+      "description": "Specify remember me cookie max age(seconds).",
       "defaultValue": 31536000
     },
     {
       "name": "shiro.rememberMeManager.cookie.domain",
       "type": "java.lang.String",
-      "description": "specify remember me cookie domain.",
+      "description": "Specify remember me cookie domain.",
       "defaultValue": null
     },
     {
       "name": "shiro.rememberMeManager.cookie.path",
       "type": "java.lang.String",
-      "description": "specify remember me cookie path.",
+      "description": "Specify remember me cookie path.",
       "defaultValue": null
     },
     {
       "name": "shiro.rememberMeManager.cookie.secure",
       "type": "java.lang.String",
-      "description": ".",
+      "description": "RememberMe cookie secure flag.",
       "defaultValue": false
     }
   ]

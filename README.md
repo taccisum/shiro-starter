@@ -168,8 +168,28 @@ protected JWTAlgorithmProvider jwtAlgorithmProvider() {
  - 默认的`JWTAlgorithmProvider`将在每次应用启动时生成一个UUID作为密钥，因此在应用重启后，此前生成的JWT会全部失效
 
 ## 配置一览
-|properties|描述|默认值|
-|:--|:-|:-|
-|shiro.web.redirect-enabled|是否允许shiro重定向页面|true|
-
+|properties|描述|默认值|适用模式|
+|:--|:-|:-|:-|
+|shiro.web.mode|shiro模式|SESSION|ALL|
+|shiro.web.redirect-enabled|是否允许shiro重定向页面|true|ALL|
+|shiro.web.filter-chain-definition|定义shiro filter chain|true|ALL|
+|shiro.loginUrl|用户未认证时重定向的页面|/login.jsp|ALL|
+|shiro.successUrl|用户认证成功后跳转的默认页面|/|ALL|
+|shiro.unauthorizedUrl|用户未授权时的重定向页面(403)|null|ALL|
+|shiro.sessionManager.deleteInvalidSessions|移除无效session|true|SESSION|
+|shiro.sessionManager.sessionIdCookieEnabled|启用cookie session ID|true|SESSION|
+|shiro.sessionManager.sessionIdUrlRewritingEnabled|启用session URL重写支持|true|SESSION|
+|shiro.userNativeSessionManager|使用原生的session manager|false|SESSION|
+|shiro.sessionManager.cookie.name|session cookie名称|JSESSIONID|SESSION|
+|shiro.sessionManager.cookie.maxAge|session cookie最大生存时间|-1|SESSION|
+|shiro.sessionManager.cookie.domain|session cookie domain|null|SESSION|
+|shiro.sessionManager.cookie.path|session cookie path|null|SESSION|
+|shiro.sessionManager.cookie.secure|session cookie secure flag|false|SESSION|
+|shiro.rememberMeManager.cookie.name|RememberMe cookie名称|JSESSIONID|SESSION|
+|shiro.rememberMeManager.cookie.maxAge|RememberMe cookie最大生存时间|-1|SESSION|
+|shiro.rememberMeManager.cookie.domain|RememberMe cookie domain|null|SESSION|
+|shiro.rememberMeManager.cookie.path|RememberMe cookie path|null|SESSION|
+|shiro.rememberMeManager.cookie.secure|RememberMe cookie secure flag|false|SESSION|
+|shiro.web.stateless.jwt.issuer|指定JWT issuer|access_token|STATELESS|
+|shiro.web.stateless.jwt.expires|指定JWT过期时间（分钟）|1天(60 * 24)|STATELESS|
 
