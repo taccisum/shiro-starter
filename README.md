@@ -172,3 +172,6 @@ protected JWTAlgorithmProvider jwtAlgorithmProvider() {
 
 ## 配置一览
 
+|properties|描述|默认值|
+|:--|:-|:-|
+|shiro.web.redirect-enabled|是否允许shiro重定向页面|true|
