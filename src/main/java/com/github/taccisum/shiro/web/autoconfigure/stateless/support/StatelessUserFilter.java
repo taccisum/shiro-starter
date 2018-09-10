@@ -1,5 +1,6 @@
 package com.github.taccisum.shiro.web.autoconfigure.stateless.support;
 
+import com.github.taccisum.shiro.web.ShiroWebProperties;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.UnauthenticatedException;
 import org.apache.shiro.web.filter.authc.UserFilter;
@@ -14,6 +15,12 @@ import javax.servlet.http.HttpServletRequest;
  * @since 2018/9/4
  */
 public class StatelessUserFilter extends UserFilter {
+    private ShiroWebProperties shiroWebProperties;
+
+    public StatelessUserFilter(ShiroWebProperties shiroWebProperties) {
+        this.shiroWebProperties = shiroWebProperties;
+    }
+
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
         if (this.isLoginRequest(request, response)) {
             return true;
@@ -37,12 +44,12 @@ public class StatelessUserFilter extends UserFilter {
     }
 
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
-        if (!acceptHtml(request)) {
-            // handle onAccessDenied() by spring DispatcherServlet via throw exception here
-            throw new UnauthenticatedException("unauthenticated user");
+        if (acceptHtml(request) && shiroWebProperties.getRedirectEnabled()) {
+            this.redirectToLogin(request, response);
+            return false;
         }
-        this.redirectToLogin(request, response);
-        return false;
+        // handle onAccessDenied() by spring DispatcherServlet via throw exception here
+        throw new UnauthenticatedException("unauthenticated user");
     }
 
     private boolean acceptHtml(ServletRequest request) {

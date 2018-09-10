@@ -13,6 +13,7 @@ import java.util.Map;
 @ConfigurationProperties("shiro.web")
 public class ShiroWebProperties {
     private ShiroMode mode = ShiroMode.SESSION;
+    private Boolean isRedirectEnabled = true;
     private Map<String, List<String>> filterChainDefinition = new LinkedHashMap<>();
     private StatelessProperties stateless = new StatelessProperties();
 
@@ -22,6 +23,14 @@ public class ShiroWebProperties {
 
     public void setMode(ShiroMode mode) {
         this.mode = mode;
+    }
+
+    public Boolean getRedirectEnabled() {
+        return isRedirectEnabled;
+    }
+
+    public void setRedirectEnabled(Boolean redirectEnabled) {
+        isRedirectEnabled = redirectEnabled;
     }
 
     public Map<String, List<String>> getFilterChainDefinition() {
