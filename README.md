@@ -170,7 +170,7 @@ protected JWTAlgorithmProvider jwtAlgorithmProvider() {
 ## 配置一览
 |properties|描述|默认值|适用模式|
 |:--|:-|:-|:-|
-|shiro.web.mode|shiro模式|SESSION|ALL|
+|shiro.web.mode|指定shiro启动模式|SESSION|ALL|
 |shiro.web.redirect-enabled|是否允许shiro重定向页面|true|ALL|
 |shiro.web.filter-chain-definition|定义shiro filter chain|true|ALL|
 |shiro.loginUrl|用户未认证时重定向的页面|/login.jsp|ALL|
