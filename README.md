@@ -26,6 +26,20 @@
 
 # 如何使用
 
+目前未上传到中央仓库，请clone源码到本地执行
+```bash
+$ mvn clean install
+```
+
+之后进行依赖
+```xml
+<dependency>
+    <groupId>com.github.taccisum</groupId>
+    <artifactId>shiro-starter</artifactId>
+    <version>2.0-SNAPSHOT</version>
+</dependency>
+```
+
 ## Session模式
 
 ### 最小配置
