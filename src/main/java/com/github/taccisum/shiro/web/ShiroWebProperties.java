@@ -41,6 +41,9 @@ public class ShiroWebProperties {
     }
 
     public static class StatelessProperties {
+        /**
+         * properties that indicate how to manage jwt.
+         */
         private JWTProperties jwt = new JWTProperties();
 
         public JWTProperties getJwt() {
@@ -52,7 +55,13 @@ public class ShiroWebProperties {
         }
 
         public static class JWTProperties {
+            /**
+             * specify jwt issuer.
+             */
             private String issuer = "access_token";
+            /**
+             * specify jwt expires time, measure by the minutes.
+             */
             private Integer expires = 60 * 24;
 
             public String getIssuer() {
