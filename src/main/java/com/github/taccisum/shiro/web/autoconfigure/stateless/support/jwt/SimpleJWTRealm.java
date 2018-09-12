@@ -14,6 +14,7 @@ import org.apache.shiro.subject.PrincipalCollection;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Objects;
 
 /**
  * todo:: unit test
@@ -22,10 +23,13 @@ import java.util.Collection;
  * @since 2018/9/5
  */
 public class SimpleJWTRealm extends AuthorizingRealm {
-    public static final String ISSUER = "access_token";
+    private String issuer;
     private JWTManager jwtManager;
 
-    public SimpleJWTRealm(JWTManager jwtManager) {
+    public SimpleJWTRealm(String issuer, JWTManager jwtManager) {
+        Objects.requireNonNull(issuer, "issuer can not be null");
+        Objects.requireNonNull(jwtManager, "jwt manager can not be null");
+        this.issuer = issuer;
         this.jwtManager = jwtManager;
     }
 
@@ -38,7 +42,7 @@ public class SimpleJWTRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         StatelessToken token = (StatelessToken) authenticationToken;
         try {
-            jwtManager.verify(ISSUER, token.getPrincipal().toString());
+            jwtManager.verify(issuer, token.getPrincipal().toString());
         } catch (JWTVerificationException e) {
             throw new InvalidTokenException(token.getToken());
         }
@@ -50,7 +54,7 @@ public class SimpleJWTRealm extends AuthorizingRealm {
         String token = principalCollection.fromRealm(this.getName()).iterator().next().toString();
         Payload payload;
         try {
-            payload = jwtManager.verifyAndParsePayload(ISSUER, token);
+            payload = jwtManager.verifyAndParsePayload(issuer, token);
         } catch (JWTVerificationException e) {
             throw new InvalidTokenException(token);
         }
