@@ -81,8 +81,7 @@ public class ShiroWebAutoConfiguration extends AbstractShiroWebAutoConfiguration
     @ConditionalOnMissingBean
     @ConditionalOnClass(name = "com.auth0.jwt.JWT")
     protected JWTManager jwtManager(PayloadTemplate payloadTemplate, JWTAlgorithmProvider algorithmProvider) {
-        ShiroWebProperties.StatelessProperties.JWTProperties jwtProperties = shiroWebProperties.getStateless().getJwt();
-        return new JWTManager(jwtProperties.getIssuer(), payloadTemplate, jwtProperties.getExpires(), algorithmProvider);
+        return new JWTManager(payloadTemplate, algorithmProvider);
     }
 
     @Bean

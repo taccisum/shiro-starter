@@ -22,6 +22,7 @@ import java.util.Collection;
  * @since 2018/9/5
  */
 public class SimpleJWTRealm extends AuthorizingRealm {
+    public static final String ISSUER = "access_token";
     private JWTManager jwtManager;
 
     public SimpleJWTRealm(JWTManager jwtManager) {
@@ -37,7 +38,7 @@ public class SimpleJWTRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         StatelessToken token = (StatelessToken) authenticationToken;
         try {
-            jwtManager.verify(token.getPrincipal().toString());
+            jwtManager.verify(ISSUER, token.getPrincipal().toString());
         } catch (JWTVerificationException e) {
             throw new InvalidTokenException(token.getToken());
         }
@@ -49,7 +50,7 @@ public class SimpleJWTRealm extends AuthorizingRealm {
         String token = principalCollection.fromRealm(this.getName()).iterator().next().toString();
         Payload payload;
         try {
-            payload = jwtManager.verifyAndParsePayload(token);
+            payload = jwtManager.verifyAndParsePayload(ISSUER, token);
         } catch (JWTVerificationException e) {
             throw new InvalidTokenException(token);
         }

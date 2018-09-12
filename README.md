@@ -204,6 +204,4 @@ protected JWTAlgorithmProvider jwtAlgorithmProvider() {
 |shiro.rememberMeManager.cookie.domain|RememberMe cookie domain|null|SESSION|
 |shiro.rememberMeManager.cookie.path|RememberMe cookie path|null|SESSION|
 |shiro.rememberMeManager.cookie.secure|RememberMe cookie secure flag|false|SESSION|
-|shiro.web.stateless.jwt.issuer|指定JWT issuer|access_token|STATELESS|
-|shiro.web.stateless.jwt.expires|指定JWT过期时间（分钟）|1天(60 * 24)|STATELESS|
 

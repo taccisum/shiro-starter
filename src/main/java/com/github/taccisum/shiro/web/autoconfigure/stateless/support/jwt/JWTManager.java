@@ -19,24 +19,16 @@ import java.util.UUID;
 public class JWTManager {
     private static final int DEFAULT_EXPIRES_MINUTES = 60 * 24;
 
-    private int expiresMinutes;
     private JWTAlgorithmProvider algorithm;
-    private String issuer = "access_token";
     private PayloadTemplate payloadTemplate;
     private JWTVerifier verifier;
 
-    public JWTManager(String issuer, PayloadTemplate payloadTemplate) {
-        this(issuer, payloadTemplate, DEFAULT_EXPIRES_MINUTES);
+    public JWTManager(PayloadTemplate payloadTemplate) {
+        this(payloadTemplate, new DefaultJWTAlgorithmProvider());
     }
 
-    public JWTManager(String issuer, PayloadTemplate payloadTemplate, int expiresMinutes) {
-        this(issuer, payloadTemplate, expiresMinutes, new DefaultJWTAlgorithmProvider());
-    }
-
-    public JWTManager(String issuer, PayloadTemplate payloadTemplate, int expiresMinutes, JWTAlgorithmProvider algorithm) {
-        this.issuer = issuer;
+    public JWTManager(PayloadTemplate payloadTemplate, JWTAlgorithmProvider algorithm) {
         this.payloadTemplate = payloadTemplate;
-        this.expiresMinutes = expiresMinutes;
         this.algorithm = algorithm;
     }
 
@@ -44,7 +36,12 @@ public class JWTManager {
         return payloadTemplate;
     }
 
-    public String create(Payload payload) {
+
+    public String create(String issuer, Payload payload) {
+        return create(issuer, payload, DEFAULT_EXPIRES_MINUTES);
+    }
+
+    public String create(String issuer, Payload payload, int expiresMinutes) {
         payload.forEach((k, v) -> {
             payloadTemplate.check().hasField(k, v);
         });
@@ -76,8 +73,8 @@ public class JWTManager {
                 .sign(algorithm.get());
     }
 
-    public DecodedJWT verify(String jwt) throws JWTVerificationException {
-        return getVerifier().verify(jwt);
+    public DecodedJWT verify(String issuer, String jwt) throws JWTVerificationException {
+        return getVerifier(issuer).verify(jwt);
     }
 
     public Payload parsePayload(DecodedJWT decodedJWT) {
@@ -106,15 +103,15 @@ public class JWTManager {
         return payload;
     }
 
-    public Payload verifyAndParsePayload(String jwt) throws JWTVerificationException {
-        return parsePayload(verify(jwt));
+    public Payload verifyAndParsePayload(String issuer, String jwt) throws JWTVerificationException {
+        return parsePayload(verify(issuer, jwt));
     }
 
     static Date calculateExpiresTime(int expiresMinutes) {
         return new Date(new Date().getTime() + expiresMinutes * 60 * 1000);
     }
 
-    private JWTVerifier getVerifier() {
+    private JWTVerifier getVerifier(String issuer) {
         if (this.verifier == null) {
             this.verifier = JWT.require(algorithm.get())
                     .withIssuer(issuer)

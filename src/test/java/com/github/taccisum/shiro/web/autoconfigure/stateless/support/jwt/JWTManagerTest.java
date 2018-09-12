@@ -12,8 +12,9 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @since 2018/9/6
  */
 public class JWTManagerTest {
+    public static final String ISSUER = "test_token";
     private final PayloadTemplate payloadTemplate = new PayloadTemplate();
-    JWTManager manager = new JWTManager("test_token", payloadTemplate);
+    JWTManager manager = new JWTManager(payloadTemplate);
 
     {
         payloadTemplate.addField("uid", Long.class);
@@ -27,11 +28,11 @@ public class JWTManagerTest {
         payload.put("uid", 12345L);
         payload.put("username", "tac");
         payload.put("isAdmin", true);
-        String jwt = manager.create(payload);
+        String jwt = manager.create(ISSUER, payload);
         System.out.println(jwt);
         assertThat(jwt).isNotEmpty();
 
-        DecodedJWT decodedJWT = manager.verify(jwt);
+        DecodedJWT decodedJWT = manager.verify(ISSUER, jwt);
         Payload pp = manager.parsePayload(decodedJWT);
         assertThat((Long) pp.get("uid")).isEqualTo(12345L);
         assertThat((String) pp.get("username")).isEqualTo("tac");
