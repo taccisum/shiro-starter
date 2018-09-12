@@ -188,7 +188,7 @@ protected JWTAlgorithmProvider jwtAlgorithmProvider() {
 |:--|:-|:-|:-|
 |shiro.web.mode|指定shiro启动模式|SESSION|ALL|
 |shiro.web.redirect-enabled|是否允许shiro重定向页面|true|ALL|
-|shiro.web.filter-chain-definition|定义shiro filter chain|true|ALL|
+|shiro.web.filter-chain-definition|定义shiro filter chain|{}|ALL|
 |shiro.loginUrl|用户未认证时重定向的页面|/login.jsp|ALL|
 |shiro.successUrl|用户认证成功后跳转的默认页面|/|ALL|
 |shiro.unauthorizedUrl|用户未授权时的重定向页面(403)|null|ALL|
