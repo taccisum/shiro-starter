@@ -1,10 +1,12 @@
 package com.github.taccisum.shiro.web.autoconfigure;
 
+import com.github.taccisum.shiro.web.ShiroFilterDefinition;
 import com.github.taccisum.shiro.web.ShiroWebProperties;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.spring.web.config.AbstractShiroWebFilterConfiguration;
 import org.apache.shiro.spring.web.config.ShiroFilterChainDefinition;
 import org.apache.shiro.web.servlet.AbstractShiroFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -17,11 +19,18 @@ import java.util.Map;
  * @since 2018/9/3
  */
 public class AbstractShiroWebFilterAutoConfiguration extends AbstractShiroWebFilterConfiguration {
+    @Autowired(required = false)
+    private ShiroFilterDefinition shiroFilterDefinition;
+
     @Bean
     @ConditionalOnMissingBean
     @Override
     protected ShiroFilterFactoryBean shiroFilterFactoryBean() {
-        return super.shiroFilterFactoryBean();
+        ShiroFilterFactoryBean filterFactoryBean = super.shiroFilterFactoryBean();
+        if (shiroFilterDefinition != null) {
+            shiroFilterDefinition.define(filterFactoryBean.getFilters());
+        }
+        return filterFactoryBean;
     }
 
     @Bean(name = "filterShiroFilterRegistrationBean")

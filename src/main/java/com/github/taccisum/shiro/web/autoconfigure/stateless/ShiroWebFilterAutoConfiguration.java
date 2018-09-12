@@ -1,9 +1,9 @@
 package com.github.taccisum.shiro.web.autoconfigure.stateless;
 
+import com.github.taccisum.shiro.web.ShiroFilterDefinition;
 import com.github.taccisum.shiro.web.ShiroWebProperties;
 import com.github.taccisum.shiro.web.autoconfigure.AbstractShiroWebFilterAutoConfiguration;
 import com.github.taccisum.shiro.web.autoconfigure.stateless.support.StatelessUserFilter;
-import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,13 +25,8 @@ public class ShiroWebFilterAutoConfiguration extends AbstractShiroWebFilterAutoC
 
     @Bean
     @ConditionalOnMissingBean
-    @Override
-    protected ShiroFilterFactoryBean shiroFilterFactoryBean() {
-        ShiroFilterFactoryBean filterFactoryBean = super.shiroFilterFactoryBean();
-
+    public ShiroFilterDefinition shiroFilterDefinition() {
         logger.info("replace [authc] filter by " + StatelessUserFilter.class);
-        filterFactoryBean.getFilters().put("authc", new StatelessUserFilter(shiroWebProperties));
-
-        return filterFactoryBean;
+        return filters -> filters.put("authc", new StatelessUserFilter(shiroWebProperties));
     }
 }
