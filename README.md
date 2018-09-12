@@ -132,7 +132,7 @@ public String login() {
     payload.put("username", "tac");
     payload.put("roles", "STAFF,DEVELOPER");
     payload.put("permissions", "system:user:view,system:user:add");
-    return jwtManager.create(payload);
+    return jwtManager.create("access_token", payload);
 }
 ```
 
@@ -142,21 +142,21 @@ public String login() {
 private JWTManager jwtManager;
 
 public Payload parseJWT() {
-    return jwtManager.verifyAndParsePayload(SecurityUtils.getSubject().getPrincipal().toString());
+    return jwtManager.verifyAndParsePayload("access_token", SecurityUtils.getSubject().getPrincipal().toString());
 }
 ```
 
 #### 其它特性
 1. 指定payload格式
 
-可以通过`PayloadTemplate`自由指定JWT payload的格式。默认为：uid, username, roles, permissions。
+可以通过`PayloadTemplate`自由指定JWT payload的格式。
 
-`JWTManager`在创建JWT时会根据`PayloadTemplate`校验payload是否合法。同时，在将JWT解析成payload时也会根据`PayloadTemplate`确定有哪些字段。
+`JWTManager`在创建JWT时会根据JWT的`issuer`选取对应的`PayloadTemplate`校验payload是否合法。同时，在将JWT解析成payload时也会根据`PayloadTemplate`确定有哪些字段。
 
 ```java
 @Bean
 public PayloadTemplate payloadTemplate() {
-    PayloadTemplate payloadTemplate = new PayloadTemplate();
+    PayloadTemplate payloadTemplate = new DefaultPayloadTemplate("access_token");
     payloadTemplate.addField("uid", Long.class);
     payloadTemplate.addField("uname", String.class);
     payloadTemplate.addField("isAdmin", Boolean.class);
@@ -165,6 +165,8 @@ public PayloadTemplate payloadTemplate() {
     return payloadTemplate;
 }
 ```
+
+`PayloadTemplate`可以创建多个，但每一个的`issuer`必须不同。当没有定义任何template时，会提供一个默认的template[issuer: access_token]：uid, username, roles, permissions。
 
 2. 指定加密算法
 
