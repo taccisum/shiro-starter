@@ -59,10 +59,10 @@ public class SimpleJWTRealm extends AuthorizingRealm {
             throw new InvalidTokenException(token);
         }
         SimpleAuthorizationInfo authzInfo = new SimpleAuthorizationInfo();
-        if (jwtManager.getPayloadTemplate().hasField("roles", String.class)) {
+        if (jwtManager.getPayloadTemplate(issuer).hasField("roles", String.class)) {
             authzInfo.addRoles(split(payload.get("roles").toString()));
         }
-        if (jwtManager.getPayloadTemplate().hasField("permissions", String.class)) {
+        if (jwtManager.getPayloadTemplate(issuer).hasField("permissions", String.class)) {
             authzInfo.addStringPermissions(split(payload.get("permissions").toString()));
         }
         return authzInfo;

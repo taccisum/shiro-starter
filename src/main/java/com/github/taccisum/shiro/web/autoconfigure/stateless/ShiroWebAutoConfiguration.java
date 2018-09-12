@@ -4,22 +4,24 @@ import com.github.taccisum.shiro.web.ShiroWebProperties;
 import com.github.taccisum.shiro.web.autoconfigure.AbstractShiroWebAutoConfiguration;
 import com.github.taccisum.shiro.web.autoconfigure.stateless.support.StatelessSessionStorageEvaluator;
 import com.github.taccisum.shiro.web.autoconfigure.stateless.support.StatelessSubjectFactory;
-import com.github.taccisum.shiro.web.autoconfigure.stateless.support.jwt.DefaultJWTAlgorithmProvider;
-import com.github.taccisum.shiro.web.autoconfigure.stateless.support.jwt.JWTAlgorithmProvider;
-import com.github.taccisum.shiro.web.autoconfigure.stateless.support.jwt.JWTManager;
-import com.github.taccisum.shiro.web.autoconfigure.stateless.support.jwt.PayloadTemplate;
+import com.github.taccisum.shiro.web.autoconfigure.stateless.support.jwt.*;
 import org.apache.shiro.mgt.RememberMeManager;
 import org.apache.shiro.mgt.SessionStorageEvaluator;
 import org.apache.shiro.mgt.SubjectFactory;
 import org.apache.shiro.session.mgt.SessionManager;
+import org.apache.shiro.util.CollectionUtils;
 import org.apache.shiro.web.servlet.Cookie;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.List;
 
 /**
  * @author tac - liaojf@cheegu.com
@@ -28,8 +30,14 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConditionalOnProperty(name = "shiro.web.mode", havingValue = "STATELESS")
 public class ShiroWebAutoConfiguration extends AbstractShiroWebAutoConfiguration {
+    public static final String DEFAULT_ISSUER = "access_token";
+    private Logger logger = LoggerFactory.getLogger(ShiroWebAutoConfiguration.class);
+
     @Autowired
     private ShiroWebProperties shiroWebProperties;
+
+    @Autowired(required = false)
+    private List<PayloadTemplate> payloadTemplates;
 
     @Bean
     @ConditionalOnMissingBean
@@ -80,20 +88,23 @@ public class ShiroWebAutoConfiguration extends AbstractShiroWebAutoConfiguration
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnClass(name = "com.auth0.jwt.JWT")
-    protected JWTManager jwtManager(PayloadTemplate payloadTemplate, JWTAlgorithmProvider algorithmProvider) {
-        return new JWTManager(payloadTemplate, algorithmProvider);
-    }
+    protected JWTManager jwtManager(JWTAlgorithmProvider algorithmProvider) {
+        JWTManager jwtManager = new JWTManager(algorithmProvider);
+        if (CollectionUtils.isEmpty(payloadTemplates)) {
+            logger.info(String.format("not found any payload template bean. add default payload template for issuer \"%s\"", DEFAULT_ISSUER));
+            PayloadTemplate template = new DefaultPayloadTemplate(DEFAULT_ISSUER);
+            template.addField("uid", Long.class);
+            template.addField("username", String.class);
+            template.addField("roles", String.class);
+            template.addField("permissions", String.class);
+            jwtManager.addPayloadTemplate(template);
+        } else {
+            for (PayloadTemplate template : payloadTemplates) {
+                jwtManager.addPayloadTemplate(template);
+            }
+        }
 
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnClass(name = "com.auth0.jwt.JWT")
-    protected PayloadTemplate payloadTemplate() {
-        PayloadTemplate template = new PayloadTemplate();
-        template.addField("uid", Long.class);
-        template.addField("username", String.class);
-        template.addField("roles", String.class);
-        template.addField("permissions", String.class);
-        return template;
+        return jwtManager;
     }
 
     @Bean

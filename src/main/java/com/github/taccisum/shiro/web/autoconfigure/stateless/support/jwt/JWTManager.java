@@ -6,11 +6,10 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.github.taccisum.shiro.web.autoconfigure.stateless.support.jwt.exception.NotExistPayloadTemplateException;
 import com.github.taccisum.shiro.web.autoconfigure.stateless.support.jwt.exception.ParsePayloadException;
 
-import java.util.Date;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author tac - liaojf@cheegu.com
@@ -20,20 +19,23 @@ public class JWTManager {
     private static final int DEFAULT_EXPIRES_MINUTES = 60 * 24;
 
     private JWTAlgorithmProvider algorithm;
-    private PayloadTemplate payloadTemplate;
+    private Map<String, PayloadTemplate> payloadTemplates = new HashMap<>();
     private JWTVerifier verifier;
 
-    public JWTManager(PayloadTemplate payloadTemplate) {
-        this(payloadTemplate, new DefaultJWTAlgorithmProvider());
+    public JWTManager() {
+        this(new DefaultJWTAlgorithmProvider());
     }
 
-    public JWTManager(PayloadTemplate payloadTemplate, JWTAlgorithmProvider algorithm) {
-        this.payloadTemplate = payloadTemplate;
+    public JWTManager(JWTAlgorithmProvider algorithm) {
         this.algorithm = algorithm;
     }
 
-    public PayloadTemplate getPayloadTemplate() {
-        return payloadTemplate;
+    public PayloadTemplate getPayloadTemplate(String key) {
+        return payloadTemplates.get(key);
+    }
+
+    public void addPayloadTemplate(PayloadTemplate payloadTemplate) {
+        payloadTemplates.put(payloadTemplate.getIssuer(), payloadTemplate);
     }
 
 
@@ -42,6 +44,10 @@ public class JWTManager {
     }
 
     public String create(String issuer, Payload payload, int expiresMinutes) {
+        PayloadTemplate payloadTemplate = payloadTemplates.get(issuer);
+        if (payloadTemplate == null) {
+            throw new NotExistPayloadTemplateException(issuer);
+        }
         payload.forEach((k, v) -> {
             payloadTemplate.check().hasField(k, v);
         });
@@ -77,9 +83,14 @@ public class JWTManager {
         return getVerifier(issuer).verify(jwt);
     }
 
-    public Payload parsePayload(DecodedJWT decodedJWT) {
+    public Payload parsePayload(String issuer, DecodedJWT decodedJWT) {
         Payload payload = new Payload();
+        PayloadTemplate payloadTemplate = payloadTemplates.get(issuer);
+        if (payloadTemplate == null) {
+            throw new NotExistPayloadTemplateException(issuer);
+        }
         payloadTemplate.getFieldMap().forEach((k, v) -> {
+
             Claim claim = decodedJWT.getClaim(k);
             if (claim.isNull()) {
                 throw new ParsePayloadException(String.format("there is not field %s[%s] on payload. check if you JWT is obsoleted.", k, v));
@@ -104,7 +115,7 @@ public class JWTManager {
     }
 
     public Payload verifyAndParsePayload(String issuer, String jwt) throws JWTVerificationException {
-        return parsePayload(verify(issuer, jwt));
+        return parsePayload(issuer, verify(issuer, jwt));
     }
 
     static Date calculateExpiresTime(int expiresMinutes) {

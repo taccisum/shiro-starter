@@ -1,6 +1,8 @@
 package com.github.taccisum.shiro.web.autoconfigure.stateless.support.jwt;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.github.taccisum.shiro.web.autoconfigure.stateless.support.jwt.exception.NotExistPayloadTemplateException;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Date;
@@ -13,13 +15,14 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class JWTManagerTest {
     public static final String ISSUER = "test_token";
-    private final PayloadTemplate payloadTemplate = new PayloadTemplate();
-    JWTManager manager = new JWTManager(payloadTemplate);
+    private final PayloadTemplate payloadTemplate = new DefaultPayloadTemplate(ISSUER);
+    JWTManager manager = new JWTManager();
 
     {
         payloadTemplate.addField("uid", Long.class);
         payloadTemplate.addField("username", String.class);
         payloadTemplate.addField("isAdmin", Boolean.class);
+        manager.addPayloadTemplate(payloadTemplate);
     }
 
     @Test
@@ -33,10 +36,16 @@ public class JWTManagerTest {
         assertThat(jwt).isNotEmpty();
 
         DecodedJWT decodedJWT = manager.verify(ISSUER, jwt);
-        Payload pp = manager.parsePayload(decodedJWT);
+        Payload pp = manager.parsePayload(ISSUER, decodedJWT);
         assertThat((Long) pp.get("uid")).isEqualTo(12345L);
         assertThat((String) pp.get("username")).isEqualTo("tac");
         assertThat((Boolean) pp.get("isAdmin")).isEqualTo(true);
+    }
+
+    // todo::
+    @Test(expected = NotExistPayloadTemplateException.class)
+    @Ignore
+    public void createWhenPayloadTemplateNotExist() throws Exception {
     }
 
     @Test

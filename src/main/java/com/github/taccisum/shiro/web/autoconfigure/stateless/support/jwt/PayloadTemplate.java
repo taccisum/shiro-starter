@@ -3,70 +3,38 @@ package com.github.taccisum.shiro.web.autoconfigure.stateless.support.jwt;
 import com.github.taccisum.shiro.web.autoconfigure.stateless.support.jwt.exception.ErrorFieldException;
 import com.github.taccisum.shiro.web.autoconfigure.stateless.support.jwt.exception.MissingFieldsException;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author tac - liaojf@cheegu.com
  * @since 2018/9/6
  */
-public class PayloadTemplate {
-    private Map<String, Class> fieldMap = new LinkedHashMap<>();
-    private PayloadChecker checker = new PayloadChecker(this);
+public interface PayloadTemplate {
+    String getIssuer();
 
-    public void addField(String key, Class type) {
-        fieldMap.put(key, type);
-    }
+    void addField(String key, Class type);
 
-    public boolean hasField(String key, Class type) {
-        return Objects.equals(fieldMap.get(key), type);
-    }
+    boolean hasField(String key, Class type);
 
-    public Set<String> getFieldNames() {
-        return fieldMap.keySet();
-    }
+    Set<String> getFieldNames();
 
-    public Map<String, Class> getFieldMap() {
-        return fieldMap;
-    }
+    Map<String, Class> getFieldMap();
 
     /**
      * @return missing fields name collection
      */
-    public List<String> extractMissingFields(Payload payload) {
-        List<String> missingFieldNames = new ArrayList<>();
-        for (String fieldName : getFieldNames()) {
-            if (payload.get(fieldName) == null) {
-                missingFieldNames.add(fieldName);
-            }
-        }
-        return missingFieldNames;
-    }
+    List<String> extractMissingFields(Payload payload);
 
-    public PayloadChecker check() {
-        return checker;
-    }
+    PayloadChecker check();
 
-    public static class PayloadChecker {
-        private PayloadTemplate template;
-
-        public PayloadChecker(PayloadTemplate template) {
-            this.template = template;
-        }
-
-        public void hasField(String key, Object value) {
-            if (!template.hasField(key, value.getClass())) {
-                throw new ErrorFieldException(String.format("template does not has field: %s[%s]. you can not put it into payload.", key, value.getClass()));
-            }
-        }
+    interface PayloadChecker {
+        void hasField(String key, Object value) throws ErrorFieldException;
 
         /**
          * @throws MissingFieldsException when missing fields' size grater than 0
          */
-        public void missingFields(Payload payload) {
-            List<String> missingFields = template.extractMissingFields(payload);
-            if (missingFields.size() > 0) {
-                throw new MissingFieldsException(String.format("build failure. missing field: %s. please implement these before execute build.", missingFields));
-            }
-        }
+        void missingFields(Payload payload) throws MissingFieldsException;
     }
 }

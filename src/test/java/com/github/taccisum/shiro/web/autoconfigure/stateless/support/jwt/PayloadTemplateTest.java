@@ -5,13 +5,14 @@ import org.junit.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
+ * todo::
  * @author tac - liaojf@cheegu.com
  * @since 2018/9/6
  */
 public class PayloadTemplateTest {
     @Test
     public void testSimply() throws Exception {
-        PayloadTemplate template = new PayloadTemplate();
+        PayloadTemplate template = new DefaultPayloadTemplate("test");
         assertThat(template.hasField("tac", String.class)).isFalse();
         template.addField("tac", String.class);
         assertThat(template.hasField("tac", String.class)).isTrue();
