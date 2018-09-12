@@ -26,7 +26,9 @@ public class ShiroWebFilterAutoConfiguration extends AbstractShiroWebFilterAutoC
     @Bean
     @ConditionalOnMissingBean
     public ShiroFilterDefinition shiroFilterDefinition() {
-        logger.info("replace [authc] filter by " + StatelessUserFilter.class);
-        return filters -> filters.put("authc", new StatelessUserFilter(shiroWebProperties));
+        return filters -> {
+            logger.info("replace [authc] filter by " + StatelessUserFilter.class);
+            filters.put("authc", new StatelessUserFilter(shiroWebProperties));
+        };
     }
 }
