@@ -42,33 +42,9 @@ public class PayloadTemplate {
         return missingFieldNames;
     }
 
-//    public PayloadBuilder create() {
-//        return new PayloadBuilder(this);
-//    }
-
     public PayloadChecker check() {
         return checker;
     }
-
-//    public static class PayloadBuilder {
-//        private PayloadTemplate template;
-//        private Payload payload = new Payload();
-//
-//        public PayloadBuilder(PayloadTemplate payloadTemplate) {
-//            this.template = payloadTemplate;
-//        }
-//
-//        public PayloadBuilder put(String key, Object value) {
-//            template.check().hasField(key, value);
-//            payload.put(key, value);
-//            return this;
-//        }
-//
-//        public Payload build() {
-//            template.check().missingFields(payload);
-//            return payload;
-//        }
-//    }
 
     public static class PayloadChecker {
         private PayloadTemplate template;
