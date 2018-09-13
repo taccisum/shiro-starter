@@ -19,7 +19,9 @@ public abstract class AbstractShiroAnnotationProcessorAutoConfiguration extends 
     @ConditionalOnMissingBean
     @Override
     public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
-        return super.defaultAdvisorAutoProxyCreator();
+        DefaultAdvisorAutoProxyCreator creator = super.defaultAdvisorAutoProxyCreator();
+        creator.setProxyTargetClass(true);
+        return creator;
     }
 
     @Bean
