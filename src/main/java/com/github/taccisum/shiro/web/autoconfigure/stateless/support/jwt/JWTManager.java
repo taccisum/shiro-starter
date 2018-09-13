@@ -20,7 +20,6 @@ public class JWTManager {
 
     private JWTAlgorithmProvider algorithm;
     private Map<String, PayloadTemplate> payloadTemplates = new HashMap<>();
-    private JWTVerifier verifier;
 
     public JWTManager() {
         this(new DefaultJWTAlgorithmProvider());
@@ -127,12 +126,9 @@ public class JWTManager {
     }
 
     private JWTVerifier getVerifier(String issuer) {
-        if (this.verifier == null) {
-            this.verifier = JWT.require(algorithm.get())
-                    .withIssuer(issuer)
-                    .build();
-        }
-        return this.verifier;
+        return JWT.require(algorithm.get())
+                .withIssuer(issuer)
+                .build();
     }
 
     private static String newJWTId() {
