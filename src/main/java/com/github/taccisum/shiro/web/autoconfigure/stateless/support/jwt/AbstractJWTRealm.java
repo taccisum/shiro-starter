@@ -54,7 +54,7 @@ public abstract class AbstractJWTRealm extends AuthorizingRealm {
         String token = principalCollection.fromRealm(this.getName()).iterator().next().toString();
         Payload payload;
         try {
-            payload = jwtManager.verifyAndParsePayload(issuer, token);
+            payload = jwtManager.parsePayload(token);
         } catch (JWTVerificationException e) {
             throw new InvalidTokenException(token);
         }

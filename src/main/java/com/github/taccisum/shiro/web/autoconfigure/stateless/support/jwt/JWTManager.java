@@ -83,6 +83,10 @@ public class JWTManager {
         return getVerifier(issuer).verify(jwt);
     }
 
+    public Payload parsePayload(String jwt) {
+        return parsePayload(JWT.decode(jwt));
+    }
+
     public Payload parsePayload(DecodedJWT decodedJWT) {
         Payload payload = new Payload();
         PayloadTemplate payloadTemplate = payloadTemplates.get(decodedJWT.getIssuer());
