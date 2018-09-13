@@ -32,11 +32,11 @@ public class JWTManagerTest {
         payload.put("username", "tac");
         payload.put("isAdmin", true);
         String jwt = manager.create(ISSUER, payload);
-        System.out.println(jwt);
+//        System.out.println(jwt);
         assertThat(jwt).isNotEmpty();
 
         DecodedJWT decodedJWT = manager.verify(ISSUER, jwt);
-        Payload pp = manager.parsePayload(ISSUER, decodedJWT);
+        Payload pp = manager.parsePayload(decodedJWT);
         assertThat((Long) pp.get("uid")).isEqualTo(12345L);
         assertThat((String) pp.get("username")).isEqualTo("tac");
         assertThat((Boolean) pp.get("isAdmin")).isEqualTo(true);

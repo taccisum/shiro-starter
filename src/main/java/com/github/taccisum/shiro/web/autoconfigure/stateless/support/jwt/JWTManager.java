@@ -83,11 +83,11 @@ public class JWTManager {
         return getVerifier(issuer).verify(jwt);
     }
 
-    public Payload parsePayload(String issuer, DecodedJWT decodedJWT) {
+    public Payload parsePayload(DecodedJWT decodedJWT) {
         Payload payload = new Payload();
-        PayloadTemplate payloadTemplate = payloadTemplates.get(issuer);
+        PayloadTemplate payloadTemplate = payloadTemplates.get(decodedJWT.getIssuer());
         if (payloadTemplate == null) {
-            throw new NotExistPayloadTemplateException(issuer);
+            throw new NotExistPayloadTemplateException(decodedJWT.getIssuer());
         }
         payloadTemplate.getFieldMap().forEach((k, v) -> {
 
@@ -115,7 +115,7 @@ public class JWTManager {
     }
 
     public Payload verifyAndParsePayload(String issuer, String jwt) throws JWTVerificationException {
-        return parsePayload(issuer, verify(issuer, jwt));
+        return parsePayload(verify(issuer, jwt));
     }
 
     static Date calculateExpiresTime(int expiresMinutes) {
