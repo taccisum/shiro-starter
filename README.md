@@ -29,7 +29,8 @@
 
 # 如何使用
 
-在你的pom.xml中添加以下依赖即可
+## 引入依赖
+
 ```xml
 <dependency>
   <groupId>com.github.taccisum</groupId>
