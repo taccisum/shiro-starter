@@ -1,6 +1,7 @@
 [![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php)
 [![Build Status](https://www.travis-ci.org/taccisum/shiro-starter.svg?branch=master)](https://www.travis-ci.org/taccisum/shiro-starter)
 [![codecov](https://codecov.io/gh/taccisum/shiro-starter/branch/master/graph/badge.svg)](https://codecov.io/gh/taccisum/shiro-starter)
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.taccisum/shiro-starter.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.taccisum%22%20AND%20a:%22shiro-starter%22)
 
 # 简介
 
@@ -27,17 +28,12 @@
 
 # 如何使用
 
-目前未上传到中央仓库，请clone源码到本地执行
-```bash
-$ mvn clean install
-```
-
-之后进行依赖
+在你的pom.xml中添加以下依赖即可
 ```xml
 <dependency>
-    <groupId>com.github.taccisum</groupId>
-    <artifactId>shiro-starter</artifactId>
-    <version>2.0-SNAPSHOT</version>
+  <groupId>com.github.taccisum</groupId>
+  <artifactId>shiro-starter</artifactId>
+  <version>2.0</version>
 </dependency>
 ```
 
