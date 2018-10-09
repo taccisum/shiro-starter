@@ -52,7 +52,7 @@ public class JWTManagerTest {
     public void calculateExpiresTime() throws Exception {
         final int EXPIRES_MINUTES = 30;
         for (int i = 0; i < 1000; i++) {
-            assertThat(Math.abs(JWTManager.calculateExpiresTime(EXPIRES_MINUTES).getTime() - new Date().getTime() - EXPIRES_MINUTES * 60 * 1000)).isLessThan(10);
+            assertThat(Math.abs(JWTManager.calculateExpiresTime(EXPIRES_MINUTES).getTime() - new Date().getTime() - EXPIRES_MINUTES * 60 * 1000)).isLessThan(100);
         }
     }
 }
