@@ -1,7 +1,8 @@
 [![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php)
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.taccisum/shiro-starter.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.taccisum%22%20AND%20a:%22shiro-starter%22)
+
 [![Build Status](https://www.travis-ci.org/taccisum/shiro-starter.svg?branch=master)](https://www.travis-ci.org/taccisum/shiro-starter)
 [![codecov](https://codecov.io/gh/taccisum/shiro-starter/branch/master/graph/badge.svg)](https://codecov.io/gh/taccisum/shiro-starter)
-[![Maven Central](https://img.shields.io/maven-central/v/com.github.taccisum/shiro-starter.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.taccisum%22%20AND%20a:%22shiro-starter%22)
 
 # 简介
 
@@ -15,8 +16,8 @@
  - 是在官方starter的基础上扩展的，兼容官方starter
  - 将更多的参数配置化，使用起来更方便、灵活
  - 提供两种运行模式
-   - `Session模式`[默认]：与Shiro官方提供的starter无二
-   - `Stateless模式`：无状态模式，也是现在许多大型系统喜欢采用的认证模式
+   - `SESSION模式`[默认]：与Shiro官方提供的starter无二
+   - `STATELESS模式`：无状态模式，也是现在许多大型系统喜欢采用的认证模式
  - 提供了一些常见的认证方案支撑（如JWT），通过简单配置即可集成
 
 
@@ -220,3 +221,10 @@ protected JWTAlgorithmProvider jwtAlgorithmProvider() {
 |shiro.rememberMeManager.cookie.path|RememberMe cookie path|null|SESSION|
 |shiro.rememberMeManager.cookie.secure|RememberMe cookie secure flag|false|SESSION|
 
+
+## 下一步计划
+ - 支持OAuth2.0集成
+ - 提供基于Redis存储的JWT Realm
+
+## 已知的问题
+ - 在STATELESS模式下，认证操作抛出的相关异常是filter级别的，导致Spring MVC的异常处理器无法捕捉到
