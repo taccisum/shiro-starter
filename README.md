@@ -1,4 +1,6 @@
 [![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php)
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.taccisum/shiro-starter.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.taccisum%22%20AND%20a:%22shiro-starter%22)
+
 [![Build Status](https://www.travis-ci.org/taccisum/shiro-starter.svg?branch=master)](https://www.travis-ci.org/taccisum/shiro-starter)
 [![codecov](https://codecov.io/gh/taccisum/shiro-starter/branch/master/graph/badge.svg)](https://codecov.io/gh/taccisum/shiro-starter)
 
@@ -14,8 +16,8 @@
  - 是在官方starter的基础上扩展的，兼容官方starter
  - 将更多的参数配置化，使用起来更方便、灵活
  - 提供两种运行模式
-   - `Session模式`[默认]：与Shiro官方提供的starter无二
-   - `Stateless模式`：无状态模式，也是现在许多大型系统喜欢采用的认证模式
+   - `SESSION模式`[默认]：与Shiro官方提供的starter无二
+   - `STATELESS模式`：无状态模式，也是现在许多大型系统喜欢采用的认证模式
  - 提供了一些常见的认证方案支撑（如JWT），通过简单配置即可集成
 
 
@@ -27,17 +29,13 @@
 
 # 如何使用
 
-目前未上传到中央仓库，请clone源码到本地执行
-```bash
-$ mvn clean install
-```
+## 引入依赖
 
-之后进行依赖
 ```xml
 <dependency>
-    <groupId>com.github.taccisum</groupId>
-    <artifactId>shiro-starter</artifactId>
-    <version>2.0-SNAPSHOT</version>
+  <groupId>com.github.taccisum</groupId>
+  <artifactId>shiro-starter</artifactId>
+  <version>2.0</version>
 </dependency>
 ```
 
@@ -183,6 +181,22 @@ protected JWTAlgorithmProvider jwtAlgorithmProvider() {
 #### 注意事项
  - `SimpleJWTRealm`不支持登出操作，每个JWT都有固定的有效时间，无法强制使其失效
  - 默认的`JWTAlgorithmProvider`将在每次应用启动时生成一个UUID作为密钥，因此在应用重启后，此前生成的JWT会全部失效
+ 
+
+## 高级特性
+
+### 自由配置shiro filters
+通过覆写`ShiroFilterDefinition` bean即可实现
+```java
+    @Bean
+    public ShiroFilterDefinition shiroFilterDefinition() {
+        return filters -> {
+            logger.info("replace [authc] filter by " + StatelessUserFilter.class);
+            filters.put("authc", new StatelessUserFilter(shiroWebProperties));
+            // add more filters
+        };
+    }
+```
 
 ## 配置一览
 |properties|描述|默认值|适用模式|
@@ -208,3 +222,10 @@ protected JWTAlgorithmProvider jwtAlgorithmProvider() {
 |shiro.rememberMeManager.cookie.path|RememberMe cookie path|null|SESSION|
 |shiro.rememberMeManager.cookie.secure|RememberMe cookie secure flag|false|SESSION|
 
+
+## 下一步计划
+ - 支持OAuth2.0集成
+ - 提供基于Redis存储的JWT Realm
+
+## 已知的问题
+ - 在STATELESS模式下，认证操作抛出的相关异常是filter级别的，导致Spring MVC的异常处理器无法捕捉到
