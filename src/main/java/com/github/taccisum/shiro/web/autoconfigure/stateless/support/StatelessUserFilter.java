@@ -52,8 +52,9 @@ public class StatelessUserFilter extends UserFilter {
         throw new UnauthenticatedException("unauthenticated user");
     }
 
-    private boolean acceptHtml(ServletRequest request) {
+    static boolean acceptHtml(ServletRequest request) {
         HttpServletRequest req = (HttpServletRequest) request;
-        return req.getHeader("Accept").contains("text/html");
+        String accept = req.getHeader("Accept");
+        return accept != null && accept.contains("text/html");
     }
 }
