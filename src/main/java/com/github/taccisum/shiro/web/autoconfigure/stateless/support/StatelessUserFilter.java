@@ -4,6 +4,8 @@ import com.github.taccisum.shiro.web.ShiroWebProperties;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.UnauthenticatedException;
 import org.apache.shiro.web.filter.authc.UserFilter;
+import org.apache.shiro.web.util.WebUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.ServletRequest;
@@ -25,14 +27,25 @@ public class StatelessUserFilter extends UserFilter {
         if (this.isLoginRequest(request, response)) {
             return true;
         } else {
-            HttpServletRequest req = (HttpServletRequest) request;
-            String token = getToken(req);
-            if (StringUtils.isEmpty(token)) {
+            try {
+                return login(request);
+            } catch (Exception e) {
+                if (request.getAttribute("javax.servlet.error.exception") == null) {
+                    request.setAttribute("javax.servlet.error.exception", e);
+                }
                 return false;
             }
-            SecurityUtils.getSubject().login(new StatelessToken(token));
-            return true;
         }
+    }
+
+    protected boolean login(ServletRequest request) {
+        HttpServletRequest req = WebUtils.toHttp(request);
+        String token = getToken(req);
+        if (StringUtils.isEmpty(token)) {
+            return false;
+        }
+        SecurityUtils.getSubject().login(new StatelessToken(token));
+        return true;
     }
 
     private String getToken(HttpServletRequest req) {
@@ -44,12 +57,17 @@ public class StatelessUserFilter extends UserFilter {
     }
 
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
-        if (acceptHtml(request) && shiroWebProperties.getRedirectEnabled()) {
+        if (request.getAttribute("javax.servlet.error.exception") != null) {
+            // some exception happen on isAccessAllowed()
+            // handle onAccessDenied() by spring ErrorController via send error here
+            WebUtils.toHttp(response).sendError(HttpStatus.UNAUTHORIZED.value(), "unauthenticated user");
+        } else if (acceptHtml(request) && shiroWebProperties.getRedirectEnabled()) {
             this.redirectToLogin(request, response);
-            return false;
+        } else {
+            request.setAttribute("javax.servlet.error.exception", new UnauthenticatedException("unauthenticated user"));
+            WebUtils.toHttp(response).sendError(HttpStatus.UNAUTHORIZED.value(), "unauthenticated user");
         }
-        // handle onAccessDenied() by spring DispatcherServlet via throw exception here
-        throw new UnauthenticatedException("unauthenticated user");
+        return false;
     }
 
     static boolean acceptHtml(ServletRequest request) {
