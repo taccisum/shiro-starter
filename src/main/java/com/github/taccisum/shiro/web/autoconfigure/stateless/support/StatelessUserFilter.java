@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServletRequest;
  * @since 2018/9/4
  */
 public class StatelessUserFilter extends UserFilter {
+    public static final String ERROR_EXCEPTION_ATTRIBUTE = org.springframework.web.util.WebUtils.ERROR_EXCEPTION_ATTRIBUTE;
+
     private ShiroWebProperties shiroWebProperties;
 
     public StatelessUserFilter(ShiroWebProperties shiroWebProperties) {
@@ -30,8 +32,8 @@ public class StatelessUserFilter extends UserFilter {
             try {
                 return login(request);
             } catch (Exception e) {
-                if (request.getAttribute("javax.servlet.error.exception") == null) {
-                    request.setAttribute("javax.servlet.error.exception", e);
+                if (request.getAttribute(ERROR_EXCEPTION_ATTRIBUTE) == null) {
+                    request.setAttribute(ERROR_EXCEPTION_ATTRIBUTE, e);
                 }
                 return false;
             }
@@ -57,14 +59,14 @@ public class StatelessUserFilter extends UserFilter {
     }
 
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
-        if (request.getAttribute("javax.servlet.error.exception") != null) {
+        if (request.getAttribute(ERROR_EXCEPTION_ATTRIBUTE) != null) {
             // some exception happen on isAccessAllowed()
             // handle onAccessDenied() by spring ErrorController via send error here
             WebUtils.toHttp(response).sendError(HttpStatus.UNAUTHORIZED.value(), "unauthenticated user");
         } else if (acceptHtml(request) && shiroWebProperties.getRedirectEnabled()) {
             this.redirectToLogin(request, response);
         } else {
-            request.setAttribute("javax.servlet.error.exception", new UnauthenticatedException("unauthenticated user"));
+            request.setAttribute(ERROR_EXCEPTION_ATTRIBUTE, new UnauthenticatedException("unauthenticated user"));
             WebUtils.toHttp(response).sendError(HttpStatus.UNAUTHORIZED.value(), "unauthenticated user");
         }
         return false;
