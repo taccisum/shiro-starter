@@ -9,6 +9,8 @@
     <version>2.0.1</version>
 
     <name>Shiro Starter</name>
+    <url>https://github.com/taccisum/shiro-starter</url>
+    <description>another spring boot starter for shiro</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
