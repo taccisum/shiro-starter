@@ -1,7 +1,7 @@
 package com.github.taccisum.shiro.web.autoconfigure.stateless.support;
 
 import com.github.taccisum.shiro.web.ShiroWebProperties;
-import com.github.taccisum.shiro.web.autoconfigure.stateless.support.extractor.HeaderTokenExtractor;
+import com.github.taccisum.shiro.web.autoconfigure.stateless.support.extractor.DefaultTokenExtractor;
 import com.github.taccisum.shiro.web.autoconfigure.stateless.support.extractor.TokenExtractor;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.UnauthenticatedException;
@@ -26,7 +26,7 @@ public class StatelessUserFilter extends UserFilter {
     private TokenExtractor tokenExtractor;
 
     public StatelessUserFilter(ShiroWebProperties shiroWebProperties) {
-        this(shiroWebProperties, new HeaderTokenExtractor());
+        this(shiroWebProperties, new DefaultTokenExtractor());
     }
 
     public StatelessUserFilter(ShiroWebProperties shiroWebProperties, TokenExtractor tokenExtractor) {

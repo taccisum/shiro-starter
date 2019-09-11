@@ -187,7 +187,7 @@ protected JWTAlgorithmProvider jwtAlgorithmProvider() {
 #### 注意事项
  - `SimpleJWTRealm`不支持登出操作，每个JWT都有固定的有效时间，无法强制使其失效
  - 默认的`JWTAlgorithmProvider`将在每次应用启动时生成一个UUID作为密钥，因此在应用重启后，此前生成的JWT会全部失效
- 
+
 
 ## 高级特性
 
@@ -204,7 +204,22 @@ protected JWTAlgorithmProvider jwtAlgorithmProvider() {
     }
 ```
 
+### 支持自定义 token 获取方式
+
+提供了 header token 和 Authorization 两种获取 token 的实现方式，默认的 StatelessUserFilter 是从 header token 里面获取 token 的。如果要改成从 Authrization
+
+```java
+    @Bean
+    public ShiroFilterDefinition shiroFilterDefinition(){
+        return filters -> {
+            logger.info("replace [authc] filter by " + StatelessUserFilter.class);
+            filters.put("authc", new StatelessUserFilter(shiroWebProperties, new                             AuthorizationTokenExtractor()));
+        };
+    }
+```
+
 ## 配置一览
+
 |properties|描述|默认值|适用模式|
 |:--|:-|:-|:-|
 |shiro.web.mode|指定shiro启动模式|SESSION|ALL|

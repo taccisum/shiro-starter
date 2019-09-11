@@ -7,17 +7,12 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author xiangtch
- * @date 2019/9/11 10:14
+ * @date 2019/9/11 10:11
  * <p> Email: xiangtiancheng@deepexi.com </p>
  */
-public class AuthorizationTokenExtractor extends AbstractTokenExtractor{
+public class DefaultTokenExtractor extends AbstractTokenExtractor {
 
-    public AuthorizationTokenExtractor() {
-        super(TokenKeyEnum.AUTHORIZATION);
-    }
-
-    @Override
-    public String getToken(HttpServletRequest request) {
-        return super.getToken(request).replace("^Bearer\\s+", "");
+    public DefaultTokenExtractor() {
+        super(TokenKeyEnum.TOKEN);
     }
 }
