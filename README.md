@@ -213,7 +213,7 @@ protected JWTAlgorithmProvider jwtAlgorithmProvider() {
     public ShiroFilterDefinition shiroFilterDefinition(){
         return filters -> {
             logger.info("replace [authc] filter by " + StatelessUserFilter.class);
-            filters.put("authc", new StatelessUserFilter(shiroWebProperties, new                             AuthorizationTokenExtractor()));
+           filters.put("authc", new StatelessUserFilter(shiroWebProperties, new AuthorizationTokenExtractor()));
         };
     }
 ```
