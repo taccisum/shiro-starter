@@ -131,7 +131,7 @@ public class StatelessModeIntegrationTest {
     public void user() throws Exception {
         try {
             mvc.perform(get("/require_user")
-                    .header("token", token)
+                    .header("Authorization", token)
                     .accept("application/json"))
                     .andDo(print())
             ;
