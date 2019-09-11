@@ -35,8 +35,4 @@ public class ShiroStatelessModeApplication {
         return realm;
     }
 
-//    @Bean
-//    public TokenExtractor tokenExtractor(){
-//        return new AuthorizationTokenExtractor();
-//    }
 }

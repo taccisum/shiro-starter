@@ -142,21 +142,6 @@ public class StatelessModeIntegrationTest {
         }
     }
 
-//    @Test
-//    public void userAuthorizationToken() throws Exception {
-//        try {
-//            mvc.perform(get("/require_user")
-//                    .header("Authorization", token)
-//                    .accept("application/json"))
-//                    .andDo(print())
-//            ;
-//            Assert.fail();
-//        } catch (NestedServletException e) {
-//            assertThat(e.getCause()).isInstanceOf(AuthorizationException.class);
-//            assertThat(e.getMessage()).contains("Subject does not have role [user]");
-//        }
-//    }
-
     @Test
     public void assertSessionNull() throws Exception {
         mvc.perform(get("/assert_session_null")
