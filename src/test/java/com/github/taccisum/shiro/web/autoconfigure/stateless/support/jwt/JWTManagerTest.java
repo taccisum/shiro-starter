@@ -57,4 +57,5 @@ public class JWTManagerTest {
             assertThat(Math.abs(JWTManager.calculateExpiresTime(EXPIRES_MINUTES).getTime() - new Date().getTime() - EXPIRES_MINUTES * 60 * 1000)).isLessThan(100);
         }
     }
+
 }
