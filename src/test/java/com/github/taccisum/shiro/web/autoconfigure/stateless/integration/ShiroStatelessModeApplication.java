@@ -6,6 +6,7 @@ import com.github.taccisum.shiro.web.autoconfigure.stateless.ShiroWebFilterAutoC
 import com.github.taccisum.shiro.web.autoconfigure.stateless.support.StatelessCredentialsMatcher;
 import com.github.taccisum.shiro.web.autoconfigure.stateless.support.StatelessUserFilter;
 import com.github.taccisum.shiro.web.autoconfigure.stateless.support.extractor.AuthorizationTokenExtractor;
+import com.github.taccisum.shiro.web.autoconfigure.stateless.support.extractor.TokenExtractor;
 import com.github.taccisum.shiro.web.autoconfigure.stateless.support.hash.SimpleHashRealm;
 import org.apache.shiro.realm.Realm;
 import org.slf4j.Logger;
@@ -34,11 +35,8 @@ public class ShiroStatelessModeApplication {
         return realm;
     }
 
-    @Bean
-    public ShiroFilterDefinition shiroFilterDefinition(){
-        return filters -> {
-            logger.info("replace [authc] filter by " + StatelessUserFilter.class);
-            filters.put("authc", new StatelessUserFilter(shiroWebProperties, new AuthorizationTokenExtractor()));
-        };
-    }
+//    @Bean
+//    public TokenExtractor tokenExtractor(){
+//        return new AuthorizationTokenExtractor();
+//    }
 }

@@ -1,8 +1,5 @@
 package com.github.taccisum.shiro.web.autoconfigure.stateless.support.extractor;
 
-import com.github.taccisum.shiro.web.autoconfigure.stateless.support.extractor.enums.TokenKeyEnum;
-import org.springframework.util.StringUtils;
-
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -13,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 public class AuthorizationTokenExtractor extends AbstractTokenExtractor{
 
     public AuthorizationTokenExtractor() {
-        super(TokenKeyEnum.AUTHORIZATION);
+        super("Authorization");
     }
 
     @Override

@@ -87,8 +87,12 @@ public class JWTManager {
     }
 
     public Payload parsePayload(DecodedJWT decodedJWT) {
-        Payload payload = new Payload();
         PayloadTemplate payloadTemplate = payloadTemplates.get(decodedJWT.getIssuer());
+        return parsePayload(decodedJWT, payloadTemplate);
+    }
+
+    public Payload parsePayload(DecodedJWT decodedJWT, PayloadTemplate payloadTemplate) {
+        Payload payload = new Payload();
         if (payloadTemplate == null) {
             throw new NotExistPayloadTemplateException(decodedJWT.getIssuer());
         }

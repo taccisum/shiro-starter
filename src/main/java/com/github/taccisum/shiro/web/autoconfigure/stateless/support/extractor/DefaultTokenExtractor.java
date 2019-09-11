@@ -1,9 +1,5 @@
 package com.github.taccisum.shiro.web.autoconfigure.stateless.support.extractor;
 
-import com.github.taccisum.shiro.web.autoconfigure.stateless.support.extractor.enums.TokenKeyEnum;
-import org.springframework.util.StringUtils;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author xiangtch
@@ -13,6 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 public class DefaultTokenExtractor extends AbstractTokenExtractor {
 
     public DefaultTokenExtractor() {
-        super(TokenKeyEnum.TOKEN);
+        super("token");
     }
 }

@@ -18,6 +18,7 @@ public class JWTManagerTest {
     private final PayloadTemplate payloadTemplate = new DefaultPayloadTemplate(ISSUER);
     JWTManager manager = new JWTManager();
 
+
     {
         payloadTemplate.addField("uid", Long.class);
         payloadTemplate.addField("username", String.class);
@@ -46,6 +47,7 @@ public class JWTManagerTest {
     @Test(expected = NotExistPayloadTemplateException.class)
     @Ignore
     public void createWhenPayloadTemplateNotExist() throws Exception {
+
     }
 
     @Test

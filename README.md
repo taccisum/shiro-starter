@@ -210,11 +210,8 @@ protected JWTAlgorithmProvider jwtAlgorithmProvider() {
 
 ```java
     @Bean
-    public ShiroFilterDefinition shiroFilterDefinition(){
-        return filters -> {
-            logger.info("replace [authc] filter by " + StatelessUserFilter.class);
-           filters.put("authc", new StatelessUserFilter(shiroWebProperties, new AuthorizationTokenExtractor()));
-        };
+    public TokenExtractor tokenExtractor(){
+        return new AuthorizationTokenExtractor();
     }
 ```
 
