@@ -3,6 +3,7 @@ package com.github.taccisum.shiro.web.autoconfigure.stateless.support.jwt;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.github.taccisum.shiro.web.autoconfigure.stateless.integration.ShiroStatelessModeApplication;
 import com.github.taccisum.shiro.web.autoconfigure.stateless.support.StatelessToken;
+import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
@@ -51,7 +52,7 @@ public class OnlyParseJWTRealmTest {
         String jwt = manager.create(ISSUER, payload);
         DecodedJWT decodedJWT = manager.verify(ISSUER, jwt);
         AuthenticationToken authenticationToken = new StatelessToken(decodedJWT.getToken());
-        System.out.println(new OnlyParseJWTRealm(ISSUER, manager).doGetAuthenticationInfo(authenticationToken));
-//        assertThat(new OnlyParseJWTRealm(issue, jwtManager).doGetAuthenticationInfo(token)).isEqualTo()
+        assertThat(new OnlyParseJWTRealm(ISSUER, manager).doGetAuthenticationInfo(authenticationToken))
+                .isInstanceOf(AuthenticationInfo.class);
     }
 }
