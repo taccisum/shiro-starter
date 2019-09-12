@@ -21,9 +21,6 @@ public class OnlyParseJWTRealm extends AbstractJWTRealm {
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
-        if (!(authenticationToken instanceof StatelessToken)){
-            throw new RuntimeException("authenticationToken is not a instance of StatelessToken");
-        }
         StatelessToken token = (StatelessToken)authenticationToken;
         String jwt = token.getPrincipal().toString();
         Payload payload = jwtManager.parsePayload(jwt);
