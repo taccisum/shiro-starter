@@ -1,17 +1,11 @@
 package com.github.taccisum.shiro.web.autoconfigure.stateless.support.extractor;
 
 import com.github.taccisum.shiro.web.autoconfigure.stateless.integration.ShiroStatelessModeApplication;
-import com.github.taccisum.shiro.web.autoconfigure.stateless.support.StatelessUserFilter;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -23,7 +17,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ShiroStatelessModeApplication.class)
 public class AuthorizationTokenExtractorTest {
-
 
     @Test
     public void getTokenTest(){

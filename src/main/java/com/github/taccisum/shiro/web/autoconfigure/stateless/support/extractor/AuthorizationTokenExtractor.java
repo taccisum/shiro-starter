@@ -4,10 +4,10 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author xiangtch
- * @date 2019/9/11 10:14
+ * @date 2019/9/12 15:06
  * <p> Email: xiangtiancheng@deepexi.com </p>
  */
-public class AuthorizationTokenExtractor extends AbstractTokenExtractor{
+public class AuthorizationTokenExtractor extends AbstractTokenExtractor {
 
     public AuthorizationTokenExtractor() {
         super("Authorization");

@@ -4,7 +4,6 @@ import com.github.taccisum.shiro.web.ShiroFilterDefinition;
 import com.github.taccisum.shiro.web.ShiroWebProperties;
 import com.github.taccisum.shiro.web.autoconfigure.AbstractShiroWebFilterAutoConfiguration;
 import com.github.taccisum.shiro.web.autoconfigure.stateless.support.StatelessUserFilter;
-import com.github.taccisum.shiro.web.autoconfigure.stateless.support.extractor.AuthorizationTokenExtractor;
 import com.github.taccisum.shiro.web.autoconfigure.stateless.support.extractor.DefaultTokenExtractor;
 import com.github.taccisum.shiro.web.autoconfigure.stateless.support.extractor.TokenExtractor;
 import org.slf4j.Logger;

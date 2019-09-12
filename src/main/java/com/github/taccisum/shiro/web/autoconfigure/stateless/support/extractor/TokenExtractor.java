@@ -4,11 +4,15 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author xiangtch
- * @date 2019/9/10 21:11
+ * @date 2019/9/12 14:59
  * <p> Email: xiangtiancheng@deepexi.com </p>
  */
 public interface TokenExtractor {
-
-    String getToken(HttpServletRequest request);
-
+    /**
+     *  从请求中获取 token 信息
+     *
+     * @param req
+     * @return
+     */
+    String getToken(HttpServletRequest req);
 }

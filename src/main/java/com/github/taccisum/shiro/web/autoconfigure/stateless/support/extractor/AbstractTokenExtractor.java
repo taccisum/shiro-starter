@@ -3,11 +3,10 @@ package com.github.taccisum.shiro.web.autoconfigure.stateless.support.extractor;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.AbstractList;
 
 /**
  * @author xiangtch
- * @date 2019/9/11 13:03
+ * @date 2019/9/12 15:02
  * <p> Email: xiangtiancheng@deepexi.com </p>
  */
 public class AbstractTokenExtractor implements TokenExtractor {
