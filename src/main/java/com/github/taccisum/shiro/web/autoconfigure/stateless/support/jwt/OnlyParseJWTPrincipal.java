@@ -2,7 +2,7 @@ package com.github.taccisum.shiro.web.autoconfigure.stateless.support.jwt;
 
 /**
  * @author xiangtch
- * @date 2019/9/11 21:42
+ * @date 2019/9/12 12:54
  * <p> Email: xiangtiancheng@deepexi.com </p>
  */
 public class OnlyParseJWTPrincipal {
