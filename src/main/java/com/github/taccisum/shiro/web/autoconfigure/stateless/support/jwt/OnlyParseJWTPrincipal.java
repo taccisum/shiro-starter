@@ -20,15 +20,7 @@ public class OnlyParseJWTPrincipal {
         return token;
     }
 
-    public void setToken(String token) {
-        this.token = token;
-    }
-
     public Payload getPayload() {
         return payload;
-    }
-
-    public void setPayload(Payload payload) {
-        this.payload = payload;
     }
 }

@@ -19,14 +19,12 @@ public class OnlyParseJWTPrincipalTest {
         payload.put("isAdmin", true);
     }
 
-    private  OnlyParseJWTPrincipal onlyParseJWTPrincipal = new OnlyParseJWTPrincipal("token", new Payload());
+    private  OnlyParseJWTPrincipal onlyParseJWTPrincipal = new OnlyParseJWTPrincipal("token", payload);
 
 
     @Test
     public void onlyParseJWTPrincipalTest(){
-        onlyParseJWTPrincipal.setToken("tokenKey");
-        assertThat(onlyParseJWTPrincipal.getToken()).isEqualTo("tokenKey");
-        onlyParseJWTPrincipal.setPayload(payload);
+        assertThat(onlyParseJWTPrincipal.getToken()).isEqualTo("token");
         assertThat(onlyParseJWTPrincipal.getPayload()).isEqualTo(payload);
     }
 }
