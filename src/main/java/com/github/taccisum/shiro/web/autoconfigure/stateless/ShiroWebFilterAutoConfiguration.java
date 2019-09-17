@@ -4,6 +4,8 @@ import com.github.taccisum.shiro.web.ShiroFilterDefinition;
 import com.github.taccisum.shiro.web.ShiroWebProperties;
 import com.github.taccisum.shiro.web.autoconfigure.AbstractShiroWebFilterAutoConfiguration;
 import com.github.taccisum.shiro.web.autoconfigure.stateless.support.StatelessUserFilter;
+import com.github.taccisum.shiro.web.autoconfigure.stateless.support.extractor.DefaultTokenExtractor;
+import com.github.taccisum.shiro.web.autoconfigure.stateless.support.extractor.TokenExtractor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +27,16 @@ public class ShiroWebFilterAutoConfiguration extends AbstractShiroWebFilterAutoC
 
     @Bean
     @ConditionalOnMissingBean
-    public ShiroFilterDefinition shiroFilterDefinition() {
+    public TokenExtractor tokenExtractor(){
+        return new DefaultTokenExtractor();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public ShiroFilterDefinition shiroFilterDefinition(TokenExtractor tokenExtractor) {
         return filters -> {
             logger.info("replace [authc] filter by " + StatelessUserFilter.class);
-            filters.put("authc", new StatelessUserFilter(shiroWebProperties));
+            filters.put("authc", new StatelessUserFilter(shiroWebProperties, tokenExtractor));
         };
     }
 }
