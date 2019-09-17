@@ -187,7 +187,7 @@ protected JWTAlgorithmProvider jwtAlgorithmProvider() {
 #### 注意事项
  - `SimpleJWTRealm`不支持登出操作，每个JWT都有固定的有效时间，无法强制使其失效
  - 默认的`JWTAlgorithmProvider`将在每次应用启动时生成一个UUID作为密钥，因此在应用重启后，此前生成的JWT会全部失效
- 
+
 
 ## 高级特性
 
@@ -204,7 +204,25 @@ protected JWTAlgorithmProvider jwtAlgorithmProvider() {
     }
 ```
 
+### 提供 OnlyParseJWTRealm 支持
+
+这部分的封装是针对微服务架构中，由于系统间的调用往往是默认可信的，所以省去了 token 的验证过程，直接解析其中的 payload 供业务代码使用
+
+指定 Realm
+
+```java
+@Bean
+public Realm realm(String issuer, JWTManager jwtManager) {
+    OnlyParseJWTRealm realm = new OnlyParseJWTRealm(issuer, jwtManager);
+    realm.setCredentialsMatcher(new StatelessCredentialsMatcher());
+    return realm;
+}
+```
+
+
+
 ## 配置一览
+
 |properties|描述|默认值|适用模式|
 |:--|:-|:-|:-|
 |shiro.web.mode|指定shiro启动模式|SESSION|ALL|
