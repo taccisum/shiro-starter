@@ -204,6 +204,21 @@ protected JWTAlgorithmProvider jwtAlgorithmProvider() {
     }
 ```
 
+### 提供 OnlyParseJWTRealm 支持
+
+这部分的封装是针对微服务架构中，由于系统间的调用往往是默认可信的，所以省去了 token 的验证过程，直接解析其中的 payload 供业务代码使用
+
+指定 Realm
+
+```java
+@Bean
+public Realm realm(String issuer, JWTManager jwtManager) {
+    OnlyParseJWTRealm realm = new OnlyParseJWTRealm(issuer, jwtManager);
+    realm.setCredentialsMatcher(new StatelessCredentialsMatcher());
+    return realm;
+}
+```
+
 ### 支持自定义 token 获取方式
 
 提供了 header token 和 Authorization 两种获取 token 的实现方式，默认的 StatelessUserFilter 是从 header token 里面获取 token 的。如果要改成从 Authrization
