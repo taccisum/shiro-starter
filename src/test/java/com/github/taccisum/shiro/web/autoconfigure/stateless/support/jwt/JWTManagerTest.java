@@ -17,8 +17,7 @@ public class JWTManagerTest {
     public static final String ISSUER = "test_token";
     private final PayloadTemplate payloadTemplate = new DefaultPayloadTemplate(ISSUER);
 
-    JWTManager manager = new JWTManager();
-
+    private JWTManager manager = new JWTManager();
 
     {
         payloadTemplate.addField("uid", Long.class);
