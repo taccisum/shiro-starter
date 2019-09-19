@@ -25,13 +25,8 @@
 
  - spring-boot: `1.5.9.RELEASE`
  - shiro-spring: `1.4.0-RC2`
-
-# Release Notes
-
-## v2.0.1
-
-- 修复stateless模式下客户端未传`Accept`请求头时会出现`NullPointException`的bug
-- 修复`StatelessUserFilter`中出现异常时需要经过servlet处理再重定向到error页面的问题
+ 
+[RELEASE NOTES](/RELEASE_NOTES.md)
 
 # 如何使用
 
