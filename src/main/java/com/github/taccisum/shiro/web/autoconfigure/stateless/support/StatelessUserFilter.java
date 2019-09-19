@@ -25,6 +25,10 @@ public class StatelessUserFilter extends UserFilter {
 
     private TokenExtractor tokenExtractor;
 
+    public StatelessUserFilter(ShiroWebProperties shiroWebProperties) {
+        this(shiroWebProperties, new DefaultTokenExtractor());
+    }
+
     public StatelessUserFilter(ShiroWebProperties shiroWebProperties, TokenExtractor tokenExtractor) {
         this.shiroWebProperties = shiroWebProperties;
         this.tokenExtractor = tokenExtractor;
