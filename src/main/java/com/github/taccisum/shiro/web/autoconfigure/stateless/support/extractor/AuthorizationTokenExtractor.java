@@ -15,6 +15,6 @@ public class AuthorizationTokenExtractor extends AbstractTokenExtractor {
 
     @Override
     public String getToken(HttpServletRequest request) {
-        return super.getToken(request).replace("^Bearer\\s+", "");
+        return super.getToken(request).replaceAll("^Bearer\\s+", "");
     }
 }

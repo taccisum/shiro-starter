@@ -19,4 +19,12 @@ public class AuthorizationTokenExtractorTest {
         AuthorizationTokenExtractor authorizationTokenExtractor = new AuthorizationTokenExtractor();
         assertThat(authorizationTokenExtractor.getToken(mockHttpServletRequest)).isEqualTo("authorization");
     }
+
+    @Test
+    public void getTokenOnTokenStartWithBearer(){
+        MockHttpServletRequest mockHttpServletRequest = new MockHttpServletRequest();
+        mockHttpServletRequest.setParameter("Authorization", "Bearer 123");
+        AuthorizationTokenExtractor authorizationTokenExtractor = new AuthorizationTokenExtractor();
+        assertThat(authorizationTokenExtractor.getToken(mockHttpServletRequest)).isEqualTo("123");
+    }
 }
