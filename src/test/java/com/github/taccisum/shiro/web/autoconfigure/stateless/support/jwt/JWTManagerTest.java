@@ -31,24 +31,24 @@ public class JWTManagerTest {
         manager.addPayloadTemplate(payloadTemplate);
     }
 
-    private Payload buildPayload(){
+    private Payload buildPayload() {
         Payload payload = new Payload();
         payload.put("uid", 12345678900L);
         payload.put("username", "tac");
         payload.put("isAdmin", true);
         payload.put("age", 18);
         final Date createTime = new Date();
-        payload.put("createTime",createTime);
+        payload.put("createTime", createTime);
         payload.put("value", 3.5);
         payload.put("float", 3.5f);
         return payload;
     }
 
-    private String buildJWT(Payload payload){
+    private String buildJWT(Payload payload) {
         return manager.create(ISSUER, payload);
     }
 
-    private DecodedJWT buildDecodeJWT(String jwt){
+    private DecodedJWT buildDecodeJWT(String jwt) {
         return manager.verify(ISSUER, jwt);
     }
 
@@ -64,16 +64,16 @@ public class JWTManagerTest {
     }
 
     @Test
-    public void parsePayloadTestWithNoPayloadTemplate(){
+    public void parsePayloadTestWithNoPayloadTemplate() {
         try {
             manager.parsePayload(buildDecodeJWT(buildJWT(buildPayload())), null);
-        }catch (Exception e){
+        } catch (Exception e) {
             assertThat(e).hasMessage(ISSUER);
         }
     }
 
     @Test
-    public void verifyAndParsePayloadTest(){
+    public void verifyAndParsePayloadTest() {
         assertThat(manager.verifyAndParsePayload(ISSUER, buildJWT(buildPayload()))).isNotEmpty();
     }
 
