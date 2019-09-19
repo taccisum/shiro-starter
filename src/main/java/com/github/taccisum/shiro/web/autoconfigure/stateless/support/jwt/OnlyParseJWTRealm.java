@@ -21,9 +21,13 @@ public class OnlyParseJWTRealm extends AbstractJWTRealm {
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
-        StatelessToken token = (StatelessToken)authenticationToken;
+        StatelessToken token = (StatelessToken) authenticationToken;
         String jwt = token.getPrincipal().toString();
-        Payload payload = jwtManager.parsePayload(jwt);
+        Payload payload = parsePayload(jwt);
         return new SimpleAccount(new OnlyParseJWTPrincipal(jwt, payload), null, this.getName());
+    }
+
+    protected Payload parsePayload(String jwt) {
+        return jwtManager.parsePayload(jwt);
     }
 }
