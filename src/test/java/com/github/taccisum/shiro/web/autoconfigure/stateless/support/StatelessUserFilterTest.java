@@ -1,5 +1,6 @@
 package com.github.taccisum.shiro.web.autoconfigure.stateless.support;
 
+import com.github.taccisum.shiro.web.autoconfigure.stateless.support.extractor.DefaultTokenExtractor;
 import org.junit.Test;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,5 +28,11 @@ public class StatelessUserFilterTest {
 
         when(req.getHeader("Accept")).thenReturn(null);
         assertThat(StatelessUserFilter.acceptHtml(req)).isFalse();
+    }
+
+    @Test
+    public void constructorCompatibility() {
+        StatelessUserFilter filter = new StatelessUserFilter(null);
+        assertThat(filter.tokenExtractor).isInstanceOf(DefaultTokenExtractor.class);
     }
 }

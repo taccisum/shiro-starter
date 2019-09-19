@@ -16,36 +16,71 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class JWTManagerTest {
     public static final String ISSUER = "test_token";
     private final PayloadTemplate payloadTemplate = new DefaultPayloadTemplate(ISSUER);
-    JWTManager manager = new JWTManager();
+
+    private JWTManager manager = new JWTManager();
 
     {
         payloadTemplate.addField("uid", Long.class);
         payloadTemplate.addField("username", String.class);
         payloadTemplate.addField("isAdmin", Boolean.class);
+        payloadTemplate.addField("age", Integer.class);
+        payloadTemplate.addField("createTime", Date.class);
+        payloadTemplate.addField("value", Double.class);
+        payloadTemplate.addField("float", Float.class);
         manager.addPayloadTemplate(payloadTemplate);
+    }
+
+    private Payload buildPayload() {
+        Payload payload = new Payload();
+        payload.put("uid", 12345678900L);
+        payload.put("username", "tac");
+        payload.put("isAdmin", true);
+        payload.put("age", 18);
+        final Date createTime = new Date();
+        payload.put("createTime", createTime);
+        payload.put("value", 3.5);
+        payload.put("float", 3.5f);
+        return payload;
+    }
+
+    private String buildJWT(Payload payload) {
+        return manager.create(ISSUER, payload);
+    }
+
+    private DecodedJWT buildDecodeJWT(String jwt) {
+        return manager.verify(ISSUER, jwt);
     }
 
     @Test
     public void create() throws Exception {
-        Payload payload = new Payload();
-        payload.put("uid", 12345L);
-        payload.put("username", "tac");
-        payload.put("isAdmin", true);
-        String jwt = manager.create(ISSUER, payload);
-//        System.out.println(jwt);
-        assertThat(jwt).isNotEmpty();
-
-        DecodedJWT decodedJWT = manager.verify(ISSUER, jwt);
-        Payload pp = manager.parsePayload(decodedJWT);
-        assertThat((Long) pp.get("uid")).isEqualTo(12345L);
+        Payload pp = manager.parsePayload(buildDecodeJWT(buildJWT(buildPayload())));
+        assertThat((Long) pp.get("uid")).isEqualTo(12345678900L);
         assertThat((String) pp.get("username")).isEqualTo("tac");
         assertThat((Boolean) pp.get("isAdmin")).isEqualTo(true);
+        assertThat((Integer) pp.get("age")).isEqualTo(18);
+        assertThat((Date) pp.get("createTime")).isInstanceOf(Date.class);
+        assertThat((Double) pp.get("value")).isEqualTo(3.5);
+    }
+
+    @Test
+    public void parsePayloadTestWithNoPayloadTemplate() {
+        try {
+            manager.parsePayload(buildDecodeJWT(buildJWT(buildPayload())), null);
+        } catch (Exception e) {
+            assertThat(e).hasMessage(ISSUER);
+        }
+    }
+
+    @Test
+    public void verifyAndParsePayloadTest() {
+        assertThat(manager.verifyAndParsePayload(ISSUER, buildJWT(buildPayload()))).isNotEmpty();
     }
 
     // todo::
     @Test(expected = NotExistPayloadTemplateException.class)
     @Ignore
     public void createWhenPayloadTemplateNotExist() throws Exception {
+
     }
 
     @Test
@@ -55,4 +90,5 @@ public class JWTManagerTest {
             assertThat(Math.abs(JWTManager.calculateExpiresTime(EXPIRES_MINUTES).getTime() - new Date().getTime() - EXPIRES_MINUTES * 60 * 1000)).isLessThan(100);
         }
     }
+
 }

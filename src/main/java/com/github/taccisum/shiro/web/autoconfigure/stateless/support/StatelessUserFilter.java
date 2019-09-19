@@ -1,6 +1,8 @@
 package com.github.taccisum.shiro.web.autoconfigure.stateless.support;
 
 import com.github.taccisum.shiro.web.ShiroWebProperties;
+import com.github.taccisum.shiro.web.autoconfigure.stateless.support.extractor.DefaultTokenExtractor;
+import com.github.taccisum.shiro.web.autoconfigure.stateless.support.extractor.TokenExtractor;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.UnauthenticatedException;
 import org.apache.shiro.web.filter.authc.UserFilter;
@@ -21,8 +23,15 @@ public class StatelessUserFilter extends UserFilter {
 
     private ShiroWebProperties shiroWebProperties;
 
+    TokenExtractor tokenExtractor;
+
     public StatelessUserFilter(ShiroWebProperties shiroWebProperties) {
+        this(shiroWebProperties, new DefaultTokenExtractor());
+    }
+
+    public StatelessUserFilter(ShiroWebProperties shiroWebProperties, TokenExtractor tokenExtractor) {
         this.shiroWebProperties = shiroWebProperties;
+        this.tokenExtractor = tokenExtractor;
     }
 
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
@@ -42,20 +51,12 @@ public class StatelessUserFilter extends UserFilter {
 
     protected boolean login(ServletRequest request) {
         HttpServletRequest req = WebUtils.toHttp(request);
-        String token = getToken(req);
+        String token = tokenExtractor.getToken(req);
         if (StringUtils.isEmpty(token)) {
             return false;
         }
         SecurityUtils.getSubject().login(new StatelessToken(token));
         return true;
-    }
-
-    private String getToken(HttpServletRequest req) {
-        String token = req.getHeader("token");
-        if (StringUtils.isEmpty(token)) {
-            token = req.getParameter("token");
-        }
-        return token;
     }
 
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
