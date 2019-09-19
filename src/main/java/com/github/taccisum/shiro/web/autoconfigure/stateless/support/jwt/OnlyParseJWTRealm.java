@@ -24,7 +24,7 @@ public class OnlyParseJWTRealm extends AbstractJWTRealm {
         StatelessToken token = (StatelessToken) authenticationToken;
         String jwt = token.getPrincipal().toString();
         Payload payload = parsePayload(jwt);
-        return new SimpleAccount(new OnlyParseJWTPrincipal(jwt, payload), null, this.getName());
+        return new SimpleAccount(new JWTPrincipal(jwt, payload), null, this.getName());
     }
 
     protected Payload parsePayload(String jwt) {

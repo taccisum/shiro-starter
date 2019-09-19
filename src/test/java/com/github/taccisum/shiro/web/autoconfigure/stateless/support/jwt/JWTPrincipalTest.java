@@ -1,6 +1,5 @@
 package com.github.taccisum.shiro.web.autoconfigure.stateless.support.jwt;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -10,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @date 2019/9/12 14:03
  * <p> Email: xiangtiancheng@deepexi.com </p>
  */
-public class OnlyParseJWTPrincipalTest {
+public class JWTPrincipalTest {
 
     private static Payload payload = new Payload();
     static {
@@ -19,12 +18,12 @@ public class OnlyParseJWTPrincipalTest {
         payload.put("isAdmin", true);
     }
 
-    private  OnlyParseJWTPrincipal onlyParseJWTPrincipal = new OnlyParseJWTPrincipal("token", payload);
+    private JWTPrincipal JWTPrincipal = new JWTPrincipal("token", payload);
 
 
     @Test
     public void onlyParseJWTPrincipalTest(){
-        assertThat(onlyParseJWTPrincipal.getToken()).isEqualTo("token");
-        assertThat(onlyParseJWTPrincipal.getPayload()).isEqualTo(payload);
+        assertThat(JWTPrincipal.getToken()).isEqualTo("token");
+        assertThat(JWTPrincipal.getPayload()).isEqualTo(payload);
     }
 }

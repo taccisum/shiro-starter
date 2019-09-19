@@ -5,13 +5,13 @@ package com.github.taccisum.shiro.web.autoconfigure.stateless.support.jwt;
  * @date 2019/9/12 12:54
  * <p> Email: xiangtiancheng@deepexi.com </p>
  */
-public class OnlyParseJWTPrincipal {
+public class JWTPrincipal {
 
     private String token;
 
     private Payload payload;
 
-    public OnlyParseJWTPrincipal(String token, Payload payload) {
+    public JWTPrincipal(String token, Payload payload) {
         this.token = token;
         this.payload = payload;
     }
