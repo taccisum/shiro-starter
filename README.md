@@ -28,6 +28,11 @@
  
 [RELEASE NOTES](/RELEASE_NOTES.md)
 
+## 关于Spring Boot 2.x
+
+该starter没有刻意针对`Spring Boot 2.x`做兼容，不过就实际使用反馈来说，在2.x环境下也暂时并没有出现什么兼容性问题，因此2.x用户也可以放心使用。
+ 
+
 # 如何使用
 
 ## 引入依赖
