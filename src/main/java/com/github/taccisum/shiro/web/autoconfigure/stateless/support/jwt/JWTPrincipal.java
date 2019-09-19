@@ -1,9 +1,8 @@
 package com.github.taccisum.shiro.web.autoconfigure.stateless.support.jwt;
 
 /**
- * @author xiangtch
- * @date 2019/9/12 12:54
- * <p> Email: xiangtiancheng@deepexi.com </p>
+ * @author xiangtch - xiangtiancheng@deepexi.com
+ * @since 2019/9/12 12:54
  */
 public class JWTPrincipal {
 

@@ -3,9 +3,8 @@ package com.github.taccisum.shiro.web.autoconfigure.stateless.support.extractor;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * @author xiangtch
- * @date 2019/9/12 15:06
- * <p> Email: xiangtiancheng@deepexi.com </p>
+ * @author xiangtch - xiangtiancheng@deepexi.com
+ * @since 2019/9/12 15:06
  */
 public class AuthorizationTokenExtractor extends AbstractTokenExtractor {
 

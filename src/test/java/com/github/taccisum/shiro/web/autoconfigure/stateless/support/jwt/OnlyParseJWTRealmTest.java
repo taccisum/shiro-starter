@@ -25,9 +25,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 /**
- * @author xiangtch
- * @date 2019/9/12 12:56
- * <p> Email: xiangtiancheng@deepexi.com </p>
+ * @author xiangtch - xiangtiancheng@deepexi.com
+ * @since 2019/9/12 12:56
  */
 public class OnlyParseJWTRealmTest {
 

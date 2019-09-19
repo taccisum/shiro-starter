@@ -5,9 +5,8 @@ import org.junit.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * @author xiangtch
- * @date 2019/9/12 14:03
- * <p> Email: xiangtiancheng@deepexi.com </p>
+ * @author xiangtch - xiangtiancheng@deepexi.com
+ * @since  2019/9/12 14:03
  */
 public class JWTPrincipalTest {
 

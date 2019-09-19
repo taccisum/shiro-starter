@@ -5,9 +5,8 @@ import org.springframework.util.StringUtils;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * @author xiangtch
- * @date 2019/9/12 15:02
- * <p> Email: xiangtiancheng@deepexi.com </p>
+ * @author xiangtch - xiangtiancheng@deepexi.com
+ * @since 2019/9/12 15:02
  */
 public class AbstractTokenExtractor implements TokenExtractor {
 

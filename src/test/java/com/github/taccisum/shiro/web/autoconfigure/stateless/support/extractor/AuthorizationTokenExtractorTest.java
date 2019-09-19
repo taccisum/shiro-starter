@@ -6,9 +6,8 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * @author xiangtch
- * @date 2019/9/12 15:08
- * <p> Email: xiangtiancheng@deepexi.com </p>
+ * @author xiangtch - xiangtiancheng@deepexi.com
+ * @since  2019/9/12 15:08npm
  */
 public class AuthorizationTokenExtractorTest {
 
