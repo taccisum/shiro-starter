@@ -8,9 +8,8 @@ import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAccount;
 
 /**
- * @author xiangtch
- * @date 2019/9/12 12:54
- * <p> Email: xiangtiancheng@deepexi.com </p>
+ * @author xiangtch - xiangtiancheng@deepexi.com
+ * @since 2019/9/12 12:54
  */
 public class OnlyParseJWTRealm extends AbstractJWTRealm {
 
