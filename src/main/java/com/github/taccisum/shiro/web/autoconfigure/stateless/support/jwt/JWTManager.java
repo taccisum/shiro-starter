@@ -16,9 +16,9 @@ import java.util.*;
  * @since 2018/9/4
  */
 public class JWTManager {
-    private static final int DEFAULT_EXPIRES_MINUTES = 60 * 24;
+    protected static final int DEFAULT_EXPIRES_MINUTES = 60 * 24;
 
-    private JWTAlgorithmProvider algorithm;
+    protected JWTAlgorithmProvider algorithm;
     private Map<String, PayloadTemplate> payloadTemplates = new HashMap<>();
 
     public JWTManager() {
@@ -139,7 +139,7 @@ public class JWTManager {
                 .build();
     }
 
-    private static String newJWTId() {
+    protected static String newJWTId() {
         return UUID.randomUUID().toString().replace("-", "");
     }
 }
