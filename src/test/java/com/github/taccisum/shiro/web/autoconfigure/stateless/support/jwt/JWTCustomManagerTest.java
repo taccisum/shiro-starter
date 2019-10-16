@@ -6,8 +6,8 @@ import com.github.taccisum.shiro.web.autoconfigure.model.Test;
 import com.github.taccisum.shiro.web.autoconfigure.model.Test1;
 import com.github.taccisum.shiro.web.autoconfigure.model.Test2;
 import com.github.taccisum.shiro.web.autoconfigure.model.Test3;
+import com.github.taccisum.shiro.web.autoconfigure.stateless.support.jwt.exception.ErrorFieldException;
 import com.github.taccisum.shiro.web.autoconfigure.stateless.support.jwt.exception.NotExistPayloadTemplateException;
-import org.assertj.core.api.ThrowableAssert;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,6 +28,7 @@ public class JWTCustomManagerTest {
     // not add into payloadTemplates
     private String issuer4 = "issuer4";
     private JWTCustomManager jwtCustomManager = new JWTCustomManager();
+    private JWTCustomManager jwtCustomManager1 = new JWTCustomManager(new DefaultJWTAlgorithmProvider());
     private Test test;
     private Test1 test1;
     private Test2 test2;
@@ -61,10 +62,6 @@ public class JWTCustomManagerTest {
         test2.setList(list);
         test2.setValue1("value1");
         this.test2 = test2;
-
-        Test3 test31 = new Test3();
-        test31.setValue3("val1");
-        this.test3 = test31;
     }
 
     public String buildJWTIss1() {
@@ -96,6 +93,13 @@ public class JWTCustomManagerTest {
         assertThatThrownBy(this::buildJWTIss4).isInstanceOf(NotExistPayloadTemplateException.class)
                 .hasMessage(issuer4);
 
+        assertThatThrownBy(this::buildJWTIss5).isInstanceOf(ErrorFieldException.class)
+                .hasMessage("claims-entity can not null");
+
+        Test3 test31 = new Test3();
+        test31.setValue3("val1");
+        this.test3 = test31;
+
         assertThatThrownBy(this::buildJWTIss5).isInstanceOf(NotExistPayloadTemplateException.class)
                 .hasMessage("claims-entity should equals the-issuer-payloadType");
     }
@@ -109,6 +113,9 @@ public class JWTCustomManagerTest {
                     .isEqualTo(objectMapper.writeValueAsString(test1));
             assertThat(objectMapper.writeValueAsString(jwtCustomManager.parseClaim(buildJWTIss3())))
                     .isEqualTo(objectMapper.writeValueAsString(test2));
+
+            assertThatThrownBy(() -> jwtCustomManager.parseClaim("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"))
+                    .isInstanceOf(NotExistPayloadTemplateException.class);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }

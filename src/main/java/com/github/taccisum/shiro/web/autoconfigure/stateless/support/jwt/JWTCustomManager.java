@@ -78,10 +78,6 @@ public class JWTCustomManager extends JWTManager {
     }
 
     public <T> T parseClaim(DecodedJWT decodedJWT) {
-        if (Objects.isNull(decodedJWT)) {
-            throw new NullPointerException("DecodedJWT can not NULL");
-        }
-
         Model<T> model = payloadTemplates.get(decodedJWT.getIssuer());
         if (Objects.isNull(model)) {
             throw new NotExistPayloadTemplateException(decodedJWT.getIssuer());
