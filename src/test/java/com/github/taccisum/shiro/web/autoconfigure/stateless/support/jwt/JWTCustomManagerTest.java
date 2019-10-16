@@ -5,11 +5,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.taccisum.shiro.web.autoconfigure.model.Test;
 import com.github.taccisum.shiro.web.autoconfigure.model.Test1;
 import com.github.taccisum.shiro.web.autoconfigure.model.Test2;
+import com.github.taccisum.shiro.web.autoconfigure.model.Test3;
+import com.github.taccisum.shiro.web.autoconfigure.stateless.support.jwt.exception.NotExistPayloadTemplateException;
+import org.assertj.core.api.ThrowableAssert;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static org.assertj.core.api.Assertions.*;
 
 /**
  * Created By @author Zhouyuhang on 2019/10/15 17:11
@@ -20,10 +25,14 @@ public class JWTCustomManagerTest {
     private String issuer1 = "issuer1";
     private String issuer2 = "issuer2";
     private String issuer3 = "issuer3";
+    // not add into payloadTemplates
+    private String issuer4 = "issuer4";
     private JWTCustomManager jwtCustomManager = new JWTCustomManager();
     private Test test;
     private Test1 test1;
     private Test2 test2;
+    // not add into payloadTemplates
+    private Test3 test3;
     private ObjectMapper objectMapper = new ObjectMapper();
 
     {
@@ -52,6 +61,10 @@ public class JWTCustomManagerTest {
         test2.setList(list);
         test2.setValue1("value1");
         this.test2 = test2;
+
+        Test3 test31 = new Test3();
+        test31.setValue3("val1");
+        this.test3 = test31;
     }
 
     public String buildJWTIss1() {
@@ -66,19 +79,36 @@ public class JWTCustomManagerTest {
         return jwtCustomManager.create(issuer3, test2);
     }
 
+    public String buildJWTIss4() {
+        return jwtCustomManager.create(issuer4, test2);
+    }
+
+    public String buildJWTIss5() {
+        return jwtCustomManager.create(issuer3, test3);
+    }
+
     @org.junit.Test
-    public void create() {
-        System.out.println(buildJWTIss1());
-        System.out.println(buildJWTIss2());
-        System.out.println(buildJWTIss3());
+    public void testCreate() {
+        assertThat(buildJWTIss1()).isNotNull();
+        assertThat(buildJWTIss2()).isNotNull();
+        assertThat(buildJWTIss3()).isNotNull();
+
+        assertThatThrownBy(this::buildJWTIss4).isInstanceOf(NotExistPayloadTemplateException.class)
+                .hasMessage(issuer4);
+
+        assertThatThrownBy(this::buildJWTIss5).isInstanceOf(NotExistPayloadTemplateException.class)
+                .hasMessage("claims-entity should equals the-issuer-payloadType");
     }
 
     @org.junit.Test
     public void parseClaim() {
         try {
-            System.out.println(objectMapper.writeValueAsString(jwtCustomManager.parseClaim(buildJWTIss1())));
-            System.out.println(objectMapper.writeValueAsString(jwtCustomManager.parseClaim(buildJWTIss2())));
-            System.out.println(objectMapper.writeValueAsString(jwtCustomManager.parseClaim(buildJWTIss3())));
+            assertThat(objectMapper.writeValueAsString(jwtCustomManager.parseClaim(buildJWTIss1())))
+                    .isEqualTo(objectMapper.writeValueAsString(test));
+            assertThat(objectMapper.writeValueAsString(jwtCustomManager.parseClaim(buildJWTIss2())))
+                    .isEqualTo(objectMapper.writeValueAsString(test1));
+            assertThat(objectMapper.writeValueAsString(jwtCustomManager.parseClaim(buildJWTIss3())))
+                    .isEqualTo(objectMapper.writeValueAsString(test2));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
