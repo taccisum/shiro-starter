@@ -3,13 +3,17 @@ package com.github.taccisum.shiro.web.autoconfigure.stateless.support.jwt;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.taccisum.shiro.web.autoconfigure.model.Model1;
+import com.github.taccisum.shiro.web.autoconfigure.stateless.support.jwt.exception.BuildPayloadException;
+import com.github.taccisum.shiro.web.autoconfigure.stateless.support.jwt.exception.ErrorFieldException;
 import com.github.taccisum.shiro.web.autoconfigure.stateless.support.jwt.exception.NotExistPayloadTemplateException;
+import com.github.taccisum.shiro.web.autoconfigure.stateless.support.jwt.exception.ParsePayloadException;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
  * @author tac - liaojf@cheegu.com
@@ -26,6 +30,7 @@ public class JWTManagerTest {
 
     private List<String> list = new ArrayList<>();
     private Map<String, String> map = new HashMap<>();
+    private Set<String> set = new HashSet<>();
     private Model1 entity = new Model1();
 
     {
@@ -40,11 +45,13 @@ public class JWTManagerTest {
         payloadTemplate.addField("float", Float.class);
         payloadTemplate.addField("list", List.class);
         payloadTemplate.addField("map", Map.class);
+        payloadTemplate.addField("set", Set.class);
         payloadTemplate.addField("entity", Model1.class);
         manager.addPayloadTemplate(payloadTemplate);
 
         map.put("key1", "val1");
         list.add("val1");
+        set.add("val1");
         entity.setValue1("val1");
         entity.setValue2("val2");
         entity.setValue3(null);
@@ -62,6 +69,7 @@ public class JWTManagerTest {
         payload.put("float", 3.5f);
         payload.put("map", map);
         payload.put("list", list);
+        payload.put("set", set);
         payload.put("entity", entity);
         return payload;
     }
@@ -89,6 +97,21 @@ public class JWTManagerTest {
 
         // add for unit test
         Payload pp1 = manager.parsePayload(buildJWT(buildPayload()));
+    }
+
+    @Test
+    public void createError() {
+        Payload payload = new Payload();
+        payload.put(null, "val1");
+        assertThatThrownBy(() -> manager.create(ISSUER, payload)).isInstanceOf(BuildPayloadException.class);
+        assertThatThrownBy(() -> manager.create("not exist", payload)).isInstanceOf(NotExistPayloadTemplateException.class);
+
+        Payload payload1 = new Payload();
+        payload1.put("list", new HashMap<>());
+        assertThatThrownBy(() -> manager.create(ISSUER, payload1)).isInstanceOf(ErrorFieldException.class);
+
+        assertThatThrownBy(() -> manager.parsePayload("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c", null)).isInstanceOf(NotExistPayloadTemplateException.class);
+        assertThatThrownBy(() -> manager.parsePayload("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c", payloadTemplate)).isInstanceOf(ParsePayloadException.class);
     }
 
     @Test
