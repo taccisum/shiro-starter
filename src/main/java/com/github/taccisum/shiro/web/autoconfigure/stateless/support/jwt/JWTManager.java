@@ -137,8 +137,8 @@ public class JWTManager {
             } else {
                 try {
                     payload.put(k, JSONConverter.readValue(claim.asString(), v));
+                   //  payload.put(k, claim.as(v));
                 } catch (Exception e) {
-                    // payload.put(k, claim.asString());
                     throw new ParsePayloadException(String.format("error deserialization claim-entity: %s: ", e.getMessage()));
                 }
             }

@@ -2,7 +2,8 @@ package com.github.taccisum.shiro.web.autoconfigure.stateless.support.jwt;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.taccisum.shiro.web.autoconfigure.model.Model1;
+import com.github.taccisum.shiro.web.autoconfigure.model.JwtInfo;
+import com.github.taccisum.shiro.web.autoconfigure.model.Model;
 import com.github.taccisum.shiro.web.autoconfigure.stateless.support.jwt.exception.BuildPayloadException;
 import com.github.taccisum.shiro.web.autoconfigure.stateless.support.jwt.exception.ErrorFieldException;
 import com.github.taccisum.shiro.web.autoconfigure.stateless.support.jwt.exception.NotExistPayloadTemplateException;
@@ -21,6 +22,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  */
 public class JWTManagerTest {
     public static final String ISSUER = "test_token";
+    public static final String ISSUER1 = "Zq2fIBhsyN7dq2znkhKP3GzRY0TThA6S";
 
     private PayloadTemplate payloadTemplate;
 
@@ -30,8 +32,7 @@ public class JWTManagerTest {
 
     private List<String> list = new ArrayList<>();
     private Map<String, String> map = new HashMap<>();
-    private Set<String> set = new HashSet<>();
-    private Model1 entity = new Model1();
+    private Model entity = new Model();
 
     {
         // add payloadTemplate into maps for initial
@@ -45,13 +46,11 @@ public class JWTManagerTest {
         payloadTemplate.addField("float", Float.class);
         payloadTemplate.addField("list", List.class);
         payloadTemplate.addField("map", Map.class);
-        payloadTemplate.addField("set", Set.class);
-        payloadTemplate.addField("entity", Model1.class);
+        payloadTemplate.addField("entity", Model.class);
         manager.addPayloadTemplate(payloadTemplate);
 
         map.put("key1", "val1");
         list.add("val1");
-        set.add("val1");
         entity.setValue1("val1");
         entity.setValue2("val2");
         entity.setValue3(null);
@@ -69,7 +68,6 @@ public class JWTManagerTest {
         payload.put("float", 3.5f);
         payload.put("map", map);
         payload.put("list", list);
-        payload.put("set", set);
         payload.put("entity", entity);
         return payload;
     }
@@ -100,7 +98,7 @@ public class JWTManagerTest {
     }
 
     @Test
-    public void createError() {
+    public void createError() throws Exception {
         Payload payload = new Payload();
         payload.put(null, "val1");
         assertThatThrownBy(() -> manager.create(ISSUER, payload)).isInstanceOf(BuildPayloadException.class);
@@ -111,7 +109,13 @@ public class JWTManagerTest {
         assertThatThrownBy(() -> manager.create(ISSUER, payload1)).isInstanceOf(ErrorFieldException.class);
 
         assertThatThrownBy(() -> manager.parsePayload("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c", null)).isInstanceOf(NotExistPayloadTemplateException.class);
-        assertThatThrownBy(() -> manager.parsePayload("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c", payloadTemplate)).isInstanceOf(ParsePayloadException.class);
+
+//        String jwt = buildJWT(buildPayload());
+
+        manager.parsePayload(buildDecodeJWT(buildJWT(buildPayload()), ISSUER));
+        // assertThatThrownBy(() -> manager.parsePayload(buildDecodeJWT(buildJWT(buildPayload()), ISSUER))).isInstanceOf(ParsePayloadException.class);
+
+
     }
 
     @Test
@@ -143,12 +147,36 @@ public class JWTManagerTest {
         }
     }
 
-    @Test
-    public void putAll() {
-        Map<String, String> map = new HashMap<>();
-        map.put("k1","v1");
-        map.put("k2","v2");
+    private void buildPayloadTemplate() {
+        PayloadTemplate payloadTemplate = new DefaultPayloadTemplate(ISSUER1);
+        payloadTemplate.addField("accountId", String.class);
+        payloadTemplate.addField("tenantId", String.class);
+        payloadTemplate.addField("params", JwtInfo.class);
+        manager.addPayloadTemplate(payloadTemplate);
+    }
+
+    private Payload buildPayload1(JwtInfo jwtInfo) {
+        jwtInfo.setNickname("廖锦锋");
+        jwtInfo.setAdmin(false);
+        jwtInfo.setUserId(1354L);
+
         Payload payload = new Payload();
-        payload.putAll(map);
+        payload.put("accountId", "97de1ba61e754946a9fc059ac42649ff");
+        payload.put("tenantId", "4e086791212649d79f30ec0527599aee");
+        payload.put("params", jwtInfo);
+        payload.put("channel", null);
+
+        return payload;
+    }
+    @Test
+    public void parseJWT() throws Exception {
+        JwtInfo jwtInfo = new JwtInfo();
+        buildPayloadTemplate();
+        Payload payload = buildPayload1(jwtInfo);
+        manager.create(ISSUER1, payload);
+
+        assertThat(payload.get("accountId")).isEqualTo("97de1ba61e754946a9fc059ac42649ff");
+        assertThat(payload.get("tenantId")).isEqualTo("4e086791212649d79f30ec0527599aee");
+        assertThat(objectMapper.writeValueAsString(payload.get("params"))).isEqualTo(objectMapper.writeValueAsString(jwtInfo));
     }
 }

@@ -71,8 +71,8 @@ public class DefaultPayloadTemplate implements PayloadTemplate {
         }
 
         public void hasField(String key, Object value) throws ErrorFieldException {
-            if (Objects.isNull(value) || Objects.isNull(key)) {
-                throw new BuildPayloadException("payload error:key and value can not NULL");
+            if (Objects.isNull(value)) {
+                throw new BuildPayloadException("payload error:value can not NULL");
             }
 
             boolean isCollection = (value instanceof Collection || value instanceof Map);
