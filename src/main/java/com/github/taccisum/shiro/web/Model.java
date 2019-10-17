@@ -10,23 +10,48 @@ import java.util.Objects;
  **/
 public class Model<T> {
 
-    private Class<T> model;
+    private Class<T> entityType;
 
-    private String claimsName;
+    private T entity;
 
-    public Model(Class<T> clazz, String claimsName) {
-        if (Objects.isNull(clazz) || Objects.isNull(claimsName)) {
+    private String claimName;
+
+    public Model(Class<T> entityType, String claimName) {
+        this(claimName);
+        if (Objects.isNull(entityType)) {
             throw new MissingFieldsException("Create Model Error");
         }
-        this.model = clazz;
-        this.claimsName = claimsName;
+        this.entityType = entityType;
     }
 
-    public Class<T> getModel() {
-        return model;
+    public Model(T entity, String claimName) {
+        this(claimName);
+        if (Objects.isNull(entity)) {
+            throw new MissingFieldsException("Create Model Error");
+        }
+        this.entity = entity;
     }
 
-    public String getClaimsName() {
-        return claimsName;
+    private Model(String claimName) {
+        if (claimName.isEmpty()) {
+            throw new MissingFieldsException("Create Model Error");
+        }
+        this.claimName = claimName;
     }
+
+    public Class<T> getEntityType() {
+        return entityType;
+    }
+
+    public String getClaimName() {
+        return claimName;
+    }
+
+    public T getEntity() {
+        return entity;
+    }
+
+//    public void setClaimName(String claimName) {
+//        this.claimName = claimName;
+//    }
 }

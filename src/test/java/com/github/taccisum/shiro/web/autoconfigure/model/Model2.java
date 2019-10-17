@@ -6,7 +6,7 @@ import java.util.Map;
  * Created By @author Zhouyuhang on 2019/10/15 17:17
  * <p></p>
  **/
-public class Test1 {
+public class Model2 {
     private Map<String, String> map;
     private String value1;
 

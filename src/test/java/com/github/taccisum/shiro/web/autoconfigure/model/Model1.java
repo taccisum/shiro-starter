@@ -4,7 +4,7 @@ package com.github.taccisum.shiro.web.autoconfigure.model;
  * Created By @author Zhouyuhang on 2019/10/15 17:13
  * <p></p>
  **/
-public class Test {
+public class Model1 {
     private String value1;
     private String value2;
     private String value3;

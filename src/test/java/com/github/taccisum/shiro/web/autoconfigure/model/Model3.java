@@ -6,8 +6,9 @@ import java.util.List;
  * Created By @author Zhouyuhang on @since 2019/10/15 19:02
  * <p></p>
  **/
-public class Test2 {
+public class Model3 {
     private List<String> list;
+    private String value1;
 
     public List<String> getList() {
         return list;
@@ -24,6 +25,4 @@ public class Test2 {
     public void setValue1(String value1) {
         this.value1 = value1;
     }
-
-    private String value1;
 }

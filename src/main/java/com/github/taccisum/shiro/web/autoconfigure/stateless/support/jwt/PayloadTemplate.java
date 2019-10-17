@@ -1,5 +1,6 @@
 package com.github.taccisum.shiro.web.autoconfigure.stateless.support.jwt;
 
+import com.github.taccisum.shiro.web.Model;
 import com.github.taccisum.shiro.web.autoconfigure.stateless.support.jwt.exception.ErrorFieldException;
 import com.github.taccisum.shiro.web.autoconfigure.stateless.support.jwt.exception.MissingFieldsException;
 
@@ -11,7 +12,12 @@ import java.util.Set;
  * @author tac - liaojf@cheegu.com
  * @since 2018/9/6
  */
-public interface PayloadTemplate {
+public interface PayloadTemplate<T> {
+
+    Model<T> getModel();
+
+    void addModel(Model model);
+
     String getIssuer();
 
     void addField(String key, Class type);
