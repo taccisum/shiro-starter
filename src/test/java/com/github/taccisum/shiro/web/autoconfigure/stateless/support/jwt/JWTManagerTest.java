@@ -164,7 +164,6 @@ public class JWTManagerTest {
         payload.put("accountId", "97de1ba61e754946a9fc059ac42649ff");
         payload.put("tenantId", "4e086791212649d79f30ec0527599aee");
         payload.put("params", jwtInfo);
-        payload.put("channel", null);
 
         return payload;
     }
