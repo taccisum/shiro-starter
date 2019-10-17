@@ -23,13 +23,18 @@ public class JWTManager {
     private JWTAlgorithmProvider algorithm;
     private Map<String, PayloadTemplate> payloadTemplates = new HashMap<>(8);
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private ObjectMapper JSONConverter;
 
     public JWTManager() {
         this(new DefaultJWTAlgorithmProvider());
     }
 
     public JWTManager(JWTAlgorithmProvider algorithm) {
+        this(algorithm, new ObjectMapper());
+    }
+
+    public JWTManager(JWTAlgorithmProvider algorithm, ObjectMapper JSONConverter) {
+        this.JSONConverter = JSONConverter;
         this.algorithm = algorithm;
     }
 
@@ -46,7 +51,7 @@ public class JWTManager {
     }
 
     public String create(String issuer, Payload payload, int expiresMinutes) {
-        PayloadTemplate payloadTemplate = payloadTemplates.get(issuer);
+        PayloadTemplate payloadTemplate = getPayloadTemplate(issuer);
         if (payloadTemplate == null) {
             throw new NotExistPayloadTemplateException(issuer);
         }
@@ -75,7 +80,7 @@ public class JWTManager {
                 builder.withClaim(k, (String) v);
             } else {
                 try {
-                    builder.withClaim(k, objectMapper.writeValueAsString(v));
+                    builder.withClaim(k, JSONConverter.writeValueAsString(v));
                 } catch (JsonProcessingException e) {
                     // builder.withClaim(k, v.toString());
                     throw new BuildPayloadException(String.format("error serialize model-entity: %s .", e.getMessage()));
@@ -131,10 +136,10 @@ public class JWTManager {
                 payload.put(k, claim.asString());
             } else {
                 try {
-                    payload.put(k, objectMapper.readValue(claim.asString(), v));
+                    payload.put(k, JSONConverter.readValue(claim.asString(), v));
                 } catch (Exception e) {
                     // payload.put(k, claim.asString());
-                    throw new ParsePayloadException(String.format("entity-type not equals to templateType: %s: ", e.getMessage()));
+                    throw new ParsePayloadException(String.format("error deserialization claim-entity: %s: ", e.getMessage()));
                 }
             }
         });

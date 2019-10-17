@@ -1,5 +1,6 @@
 package com.github.taccisum.shiro.web.autoconfigure.stateless.support.jwt;
 
+import com.github.taccisum.shiro.web.autoconfigure.stateless.support.jwt.exception.BuildPayloadException;
 import com.github.taccisum.shiro.web.autoconfigure.stateless.support.jwt.exception.ErrorFieldException;
 import com.github.taccisum.shiro.web.autoconfigure.stateless.support.jwt.exception.MissingFieldsException;
 
@@ -26,8 +27,18 @@ public class DefaultPayloadTemplate implements PayloadTemplate {
         fieldMap.put(key, type);
     }
 
-    public boolean hasField(String key, Class type) {
-        return Objects.equals(fieldMap.get(key), type);
+    public boolean hasField(String key, Object entity) {
+        Class templateClazzType = fieldMap.get(key);
+
+        if (entity instanceof Collection || entity instanceof Map) {
+            if ((Objects.equals(templateClazzType, List.class) && entity instanceof List)
+                    || (Objects.equals(templateClazzType, Map.class) && entity instanceof Map)
+                    || (Objects.equals(templateClazzType, Set.class) && entity instanceof Set)) {
+                return true;
+            }
+            return false;
+        }
+        return Objects.equals(fieldMap.get(key), entity.getClass());
     }
 
     public Set<String> getFieldNames() {
@@ -60,7 +71,11 @@ public class DefaultPayloadTemplate implements PayloadTemplate {
         }
 
         public void hasField(String key, Object value) throws ErrorFieldException {
-            if (!template.hasField(key, value.getClass())) {
+            if (Objects.isNull(value) || Objects.isNull(key)) {
+                throw new BuildPayloadException("payload error:key and value can not NULL");
+            }
+
+            if (!template.hasField(key, value)) {
                 throw new ErrorFieldException(String.format("template does not has field: %s[%s]. you can not put it into payload.", key, value.getClass()));
             }
         }

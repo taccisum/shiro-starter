@@ -9,10 +9,6 @@ import java.util.Map;
  */
 public class Payload extends HashMap<String, Object> {
 
-    public Payload() {
-        super();
-    }
-
     @Override
     public Object put(String key, Object value) {
         return super.put(key, value);

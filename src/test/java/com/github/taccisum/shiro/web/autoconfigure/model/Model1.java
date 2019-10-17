@@ -7,8 +7,8 @@ package com.github.taccisum.shiro.web.autoconfigure.model;
 public class Model1 {
     private String value1;
     private String value2;
+    // setNull
     private String value3;
-
 
     public String getValue1() {
         return value1;

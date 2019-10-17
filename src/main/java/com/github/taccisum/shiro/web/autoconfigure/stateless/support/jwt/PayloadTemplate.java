@@ -17,7 +17,7 @@ public interface PayloadTemplate {
 
     void addField(String key, Class type);
 
-    boolean hasField(String key, Class type);
+    boolean hasField(String key, Object type);
 
     Set<String> getFieldNames();
 
