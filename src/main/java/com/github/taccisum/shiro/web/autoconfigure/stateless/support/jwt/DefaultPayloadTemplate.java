@@ -27,18 +27,18 @@ public class DefaultPayloadTemplate implements PayloadTemplate {
         fieldMap.put(key, type);
     }
 
-    public boolean hasField(String key, Object entity) {
-        Class templateClazzType = fieldMap.get(key);
+    public boolean hasField(String key, Class type) {
+        return Objects.equals(fieldMap.get(key), type);
+    }
 
-        if (entity instanceof Collection || entity instanceof Map) {
-            if ((Objects.equals(templateClazzType, List.class) && entity instanceof List)
-                    || (Objects.equals(templateClazzType, Map.class) && entity instanceof Map)
-                    || (Objects.equals(templateClazzType, Set.class) && entity instanceof Set)) {
-                return true;
-            }
-            return false;
+    public boolean hasFieldForCollection(String key, Object entity) {
+        Class templateClazzType = fieldMap.get(key);
+        if ((Objects.equals(templateClazzType, List.class) && entity instanceof List)
+                || (Objects.equals(templateClazzType, Map.class) && entity instanceof Map)
+                || (Objects.equals(templateClazzType, Set.class) && entity instanceof Set)) {
+            return true;
         }
-        return Objects.equals(fieldMap.get(key), entity.getClass());
+        return false;
     }
 
     public Set<String> getFieldNames() {
@@ -75,7 +75,15 @@ public class DefaultPayloadTemplate implements PayloadTemplate {
                 throw new BuildPayloadException("payload error:key and value can not NULL");
             }
 
-            if (!template.hasField(key, value)) {
+            boolean isCollection = (value instanceof Collection || value instanceof Map);
+            boolean hasField;
+            if (isCollection) {
+                hasField = template.hasFieldForCollection(key, value);
+            } else {
+                hasField = template.hasField(key, value.getClass());
+            }
+
+            if (!hasField) {
                 throw new ErrorFieldException(String.format("template does not has field: %s[%s]. you can not put it into payload.", key, value.getClass()));
             }
         }
