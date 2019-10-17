@@ -12,11 +12,7 @@ import java.util.Set;
  * @author tac - liaojf@cheegu.com
  * @since 2018/9/6
  */
-public interface PayloadTemplate<T> {
-
-    Model<T> getModel();
-
-    void addModel(Model model);
+public interface PayloadTemplate {
 
     String getIssuer();
 

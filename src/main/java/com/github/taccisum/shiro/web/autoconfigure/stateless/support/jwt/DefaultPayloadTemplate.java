@@ -11,33 +11,13 @@ import java.util.*;
  * @author tac - liaojf@cheegu.com
  * @since 2018/9/12
  */
-public class DefaultPayloadTemplate<T> implements PayloadTemplate<T> {
+public class DefaultPayloadTemplate implements PayloadTemplate {
     private String issuer;
-    // save base-type field
     private Map<String, Class> fieldMap = new LinkedHashMap<>();
     private PayloadChecker checker = new DefaultPayloadChecker(this);
 
-    // save entityType
-    private Model<T> model;
-
-    public void addModel(Model model) {
-        if (fieldMap.size() > 0) {
-            throw new BuildPayloadException("modelEntity and base-type can not concurrence ");
-        }
-        this.model = model;
-    }
-
-    public Model<T> getModel() {
-        return model;
-    }
-
     public DefaultPayloadTemplate(String issuer) {
         this.issuer = issuer;
-    }
-
-    public DefaultPayloadTemplate(String issuer, Model model) {
-        this.issuer = issuer;
-        this.model = model;
     }
 
     public String getIssuer() {
@@ -45,9 +25,6 @@ public class DefaultPayloadTemplate<T> implements PayloadTemplate<T> {
     }
 
     public void addField(String key, Class type) {
-        if (Objects.nonNull(model)) {
-            throw new BuildPayloadException("modelEntity and base-type can not concurrence ");
-        }
         fieldMap.put(key, type);
     }
 

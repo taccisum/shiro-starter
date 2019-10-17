@@ -56,15 +56,15 @@ public class JWTManagerTest {
         manager.addPayloadTemplate(payloadTemplate);
 
         payloadTemplate1 = new DefaultPayloadTemplate(ISSUER1);
-        payloadTemplate1.addModel(new Model(Model1.class, ISSUER1));
+        payloadTemplate1.addField(ISSUER1, Model1.class);
         manager.addPayloadTemplate(payloadTemplate1);
 
         payloadTemplate2 = new DefaultPayloadTemplate(ISSUER2);
-        payloadTemplate2.addModel(new Model(Model2.class, ISSUER2));
+        payloadTemplate2.addField(ISSUER2, Model2.class);
         manager.addPayloadTemplate(payloadTemplate2);
 
         payloadTemplate3 = new DefaultPayloadTemplate(ISSUER3);
-        payloadTemplate3.addModel(new Model(Model3.class, ISSUER3));
+        payloadTemplate3.addField(ISSUER3, Model3.class);
         manager.addPayloadTemplate(payloadTemplate3);
 
         // create entity and add filed for creating JWT
@@ -91,14 +91,14 @@ public class JWTManagerTest {
         this.model3 = model3;
 
         // create payload for creating JWT
-        this.payload1 = new Payload()
-                .setModel(new Model(model1, ISSUER1));
+        this.payload1 = new Payload();
+        payload1.put(ISSUER1, model1);
 
-        this.payload2 = new Payload()
-                .setModel(new Model(model2, ISSUER2));
+        this.payload2 = new Payload();
+        payload2.put(ISSUER2, model2);
 
-        this.payload3 = new Payload()
-                .setModel(new Model(model3, ISSUER3));
+        this.payload3 = new Payload();
+        payload3.put(ISSUER3, model3);
     }
 
     private Payload buildPayload() {
@@ -145,15 +145,15 @@ public class JWTManagerTest {
     @Test
     public void createEntity() throws Exception {
         Payload payload1 = manager.parsePayload(buildJWT1());
-        assertThat(objectMapper.writeValueAsString(payload1.getModel().getEntity()))
+        assertThat(objectMapper.writeValueAsString(payload1.get(ISSUER1)))
                 .isEqualTo(objectMapper.writeValueAsString(model1));
 
         Payload payload2 = manager.parsePayload(buildDecodeJWT(buildJWT2(), ISSUER2));
-        assertThat(objectMapper.writeValueAsString(payload2.getModel().getEntity()))
+        assertThat(objectMapper.writeValueAsString(payload2.get(ISSUER2)))
                 .isEqualTo(objectMapper.writeValueAsString(model2));
 
         Payload payload3 = manager.parsePayload(buildDecodeJWT(buildJWT3(), ISSUER3));
-        assertThat(objectMapper.writeValueAsString(payload3.getModel().getEntity()))
+        assertThat(objectMapper.writeValueAsString(payload3.get(ISSUER3)))
                 .isEqualTo(objectMapper.writeValueAsString(model3));
     }
 
@@ -187,4 +187,12 @@ public class JWTManagerTest {
         }
     }
 
+    @Test
+    public void putAll() {
+        Map<String, String> map = new HashMap<>();
+        map.put("k1","v1");
+        map.put("k2","v2");
+        Payload payload = new Payload();
+        payload.putAll(map);
+    }
 }
