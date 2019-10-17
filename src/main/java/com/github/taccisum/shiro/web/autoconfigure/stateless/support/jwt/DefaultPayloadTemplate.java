@@ -1,7 +1,5 @@
 package com.github.taccisum.shiro.web.autoconfigure.stateless.support.jwt;
 
-import com.github.taccisum.shiro.web.Model;
-import com.github.taccisum.shiro.web.autoconfigure.stateless.support.jwt.exception.BuildPayloadException;
 import com.github.taccisum.shiro.web.autoconfigure.stateless.support.jwt.exception.ErrorFieldException;
 import com.github.taccisum.shiro.web.autoconfigure.stateless.support.jwt.exception.MissingFieldsException;
 

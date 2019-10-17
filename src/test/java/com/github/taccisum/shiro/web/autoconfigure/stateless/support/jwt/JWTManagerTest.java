@@ -2,7 +2,6 @@ package com.github.taccisum.shiro.web.autoconfigure.stateless.support.jwt;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.taccisum.shiro.web.Model;
 import com.github.taccisum.shiro.web.autoconfigure.model.Model1;
 import com.github.taccisum.shiro.web.autoconfigure.model.Model2;
 import com.github.taccisum.shiro.web.autoconfigure.model.Model3;

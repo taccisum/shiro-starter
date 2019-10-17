@@ -45,7 +45,7 @@ public class JWTManager {
         return create(issuer, payload, DEFAULT_EXPIRES_MINUTES);
     }
 
-    public <T> String create(String issuer, Payload payload, int expiresMinutes) {
+    public String create(String issuer, Payload payload, int expiresMinutes) {
         PayloadTemplate payloadTemplate = payloadTemplates.get(issuer);
         if (payloadTemplate == null) {
             throw new NotExistPayloadTemplateException(issuer);
