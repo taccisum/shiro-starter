@@ -6,6 +6,9 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.taccisum.shiro.web.autoconfigure.stateless.support.jwt.exception.BuildPayloadException;
 import com.github.taccisum.shiro.web.autoconfigure.stateless.support.jwt.exception.NotExistPayloadTemplateException;
 import com.github.taccisum.shiro.web.autoconfigure.stateless.support.jwt.exception.ParsePayloadException;
 
@@ -17,36 +20,42 @@ import java.util.*;
  */
 public class JWTManager {
     private static final int DEFAULT_EXPIRES_MINUTES = 60 * 24;
-
     private JWTAlgorithmProvider algorithm;
-    private Map<String, PayloadTemplate> payloadTemplates = new HashMap<>();
+    private Map<String, PayloadTemplate> payloadTemplates = new HashMap<>(8);
+
+    private ObjectMapper JSONConverter;
 
     public JWTManager() {
         this(new DefaultJWTAlgorithmProvider());
     }
 
     public JWTManager(JWTAlgorithmProvider algorithm) {
+        this(algorithm, new ObjectMapper());
+    }
+
+    public JWTManager(JWTAlgorithmProvider algorithm, ObjectMapper JSONConverter) {
+        this.JSONConverter = JSONConverter;
         this.algorithm = algorithm;
     }
 
-    public PayloadTemplate getPayloadTemplate(String key) {
-        return payloadTemplates.get(key);
+    public PayloadTemplate getPayloadTemplate(String issuer) {
+        return payloadTemplates.get(issuer);
     }
 
     public void addPayloadTemplate(PayloadTemplate payloadTemplate) {
         payloadTemplates.put(payloadTemplate.getIssuer(), payloadTemplate);
     }
 
-
     public String create(String issuer, Payload payload) {
         return create(issuer, payload, DEFAULT_EXPIRES_MINUTES);
     }
 
     public String create(String issuer, Payload payload, int expiresMinutes) {
-        PayloadTemplate payloadTemplate = payloadTemplates.get(issuer);
+        PayloadTemplate payloadTemplate = getPayloadTemplate(issuer);
         if (payloadTemplate == null) {
             throw new NotExistPayloadTemplateException(issuer);
         }
+
         payload.forEach((k, v) -> {
             payloadTemplate.check().hasField(k, v);
         });
@@ -70,9 +79,15 @@ public class JWTManager {
             } else if (v instanceof String) {
                 builder.withClaim(k, (String) v);
             } else {
-                builder.withClaim(k, v.toString());
+                try {
+                    builder.withClaim(k, JSONConverter.writeValueAsString(v));
+                } catch (JsonProcessingException e) {
+                    // builder.withClaim(k, v.toString());
+                    throw new BuildPayloadException(String.format("error serialize model-entity: %s .", e.getMessage()));
+                }
             }
         });
+
         return builder
                 .withJWTId(newJWTId())
                 .sign(algorithm.get());
@@ -96,16 +111,17 @@ public class JWTManager {
     }
 
     public Payload parsePayload(DecodedJWT decodedJWT, PayloadTemplate payloadTemplate) {
-        Payload payload = new Payload();
         if (payloadTemplate == null) {
             throw new NotExistPayloadTemplateException(decodedJWT.getIssuer());
         }
-        payloadTemplate.getFieldMap().forEach((k, v) -> {
 
+        Payload payload = new Payload();
+        payloadTemplate.getFieldMap().forEach((k, v) -> {
             Claim claim = decodedJWT.getClaim(k);
             if (claim.isNull()) {
                 throw new ParsePayloadException(String.format("there is not field %s[%s] on payload. check if you JWT is obsoleted.", k, v));
             }
+
             if (Objects.equals(v, Boolean.class)) {
                 payload.put(k, claim.asBoolean());
             } else if (Objects.equals(v, Integer.class)) {
@@ -119,9 +135,15 @@ public class JWTManager {
             } else if (Objects.equals(v, String.class)) {
                 payload.put(k, claim.asString());
             } else {
-                payload.put(k, claim.asString());
+                try {
+                    payload.put(k, JSONConverter.readValue(claim.asString(), v));
+                   //  payload.put(k, claim.as(v));
+                } catch (Exception e) {
+                    throw new ParsePayloadException(String.format("error deserialization claim-entity: %s: ", e.getMessage()));
+                }
             }
         });
+
         return payload;
     }
 
@@ -130,7 +152,7 @@ public class JWTManager {
     }
 
     static Date calculateExpiresTime(int expiresMinutes) {
-        return new Date(new Date().getTime() + expiresMinutes * 60 * 1000);
+        return new Date(System.currentTimeMillis() + expiresMinutes * 60 * 1000);
     }
 
     private JWTVerifier getVerifier(String issuer) {
@@ -139,7 +161,8 @@ public class JWTManager {
                 .build();
     }
 
-    private static String newJWTId() {
+    public static String newJWTId() {
         return UUID.randomUUID().toString().replace("-", "");
     }
+
 }

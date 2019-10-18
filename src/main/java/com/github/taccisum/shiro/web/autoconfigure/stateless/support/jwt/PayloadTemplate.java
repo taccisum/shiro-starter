@@ -12,11 +12,14 @@ import java.util.Set;
  * @since 2018/9/6
  */
 public interface PayloadTemplate {
+
     String getIssuer();
 
     void addField(String key, Class type);
 
     boolean hasField(String key, Class type);
+
+    boolean hasFieldForCollection(String key, Object entity);
 
     Set<String> getFieldNames();
 

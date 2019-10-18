@@ -8,6 +8,7 @@ import java.util.Map;
  * @since 2018/9/5
  */
 public class Payload extends HashMap<String, Object> {
+
     @Override
     public Object put(String key, Object value) {
         return super.put(key, value);
