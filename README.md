@@ -137,6 +137,11 @@ public String login() {
     payload.put("username", "tac");
     payload.put("roles", "STAFF,DEVELOPER");
     payload.put("permissions", "system:user:view,system:user:add");
+    // 支持自定义对象,List,Map等类型
+    payload.put("map", map);
+    payload.put("list", list);
+    // 自定义对象
+    payload.put("entity", entity);
     return jwtManager.create("access_token", payload);
 }
 ```
@@ -167,6 +172,9 @@ public PayloadTemplate payloadTemplate() {
     payloadTemplate.addField("isAdmin", Boolean.class);
     payloadTemplate.addField("type", String.class);
     payloadTemplate.addField("roles", String.class);
+    payloadTemplate.addField("list", List.class);
+    payloadTemplate.addField("map", Map.class);
+    payloadTemplate.addField("entity", Entity.class); // Entity为自定义类型
     return payloadTemplate;
 }
 ```
