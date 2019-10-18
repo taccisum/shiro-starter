@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.taccisum.shiro.web.autoconfigure.stateless.support.jwt.exception.BuildPayloadException;
 import com.github.taccisum.shiro.web.autoconfigure.stateless.support.jwt.exception.NotExistPayloadTemplateException;
 import com.github.taccisum.shiro.web.autoconfigure.stateless.support.jwt.exception.ParsePayloadException;
+import org.springframework.util.StringUtils;
 
 import java.util.*;
 
@@ -136,8 +137,12 @@ public class JWTManager {
                 payload.put(k, claim.asString());
             } else {
                 try {
-                    payload.put(k, JSONConverter.readValue(claim.asString(), v));
-                   //  payload.put(k, claim.as(v));
+                    String str = claim.asString();
+                    if (!StringUtils.isEmpty(str)) {
+                        payload.put(k, JSONConverter.readValue(str, v));
+                    } else {
+                        payload.put(k, claim.as(v));
+                    }
                 } catch (Exception e) {
                     throw new ParsePayloadException(String.format("error deserialization claim-entity: %s: ", e.getMessage()));
                 }
