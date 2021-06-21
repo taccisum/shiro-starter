@@ -2,6 +2,14 @@
 
 ## v2.1.0
 
+- 默认提供 authn filter
+
+## v2.2.0
+
+- 支持多级 payload
+
+## v2.1.0
+
 - JWTManager支持使用传入的payload template解析jwt
 - 引入`TokenExtractor`，支持自定义token获取方式
 - 提供`OnlyParseJWTRealm`

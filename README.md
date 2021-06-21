@@ -83,6 +83,8 @@ shiro:
     filter-chain-definition:
       anon:
         - /login
+      authn:
+        - /goods/recommendations
       authc:
         - /**
 ```
@@ -212,6 +214,11 @@ protected JWTAlgorithmProvider jwtAlgorithmProvider() {
     }
 ```
 
+
+#### 额外提供的 filters
+
+- authn: 仅当用户请求提供了 token 时才执行认证逻辑，未提供时将直接放行（视为匿名用户），适用于一些认证前后均可访问，且业务逻辑会有所不同的 api（例如商品推荐）
+
 ### 提供 OnlyParseJWTRealm 支持
 
 这部分的封装是针对微服务架构中，由于系统间的调用往往是默认可信的，所以省去了 token 的验证过程，直接解析其中的 payload 供业务代码使用
@@ -237,7 +244,6 @@ public Realm realm(String issuer, JWTManager jwtManager) {
         return new AuthorizationTokenExtractor();
     }
 ```
-
 
 
 ## 配置一览
