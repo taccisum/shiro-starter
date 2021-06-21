@@ -3,6 +3,7 @@ package com.github.taccisum.shiro.web.autoconfigure.stateless;
 import com.github.taccisum.shiro.web.ShiroFilterDefinition;
 import com.github.taccisum.shiro.web.ShiroWebProperties;
 import com.github.taccisum.shiro.web.autoconfigure.AbstractShiroWebFilterAutoConfiguration;
+import com.github.taccisum.shiro.web.autoconfigure.stateless.support.AuthOnNeedStatelessUserFilter;
 import com.github.taccisum.shiro.web.autoconfigure.stateless.support.StatelessUserFilter;
 import com.github.taccisum.shiro.web.autoconfigure.stateless.support.extractor.DefaultTokenExtractor;
 import com.github.taccisum.shiro.web.autoconfigure.stateless.support.extractor.TokenExtractor;
@@ -27,7 +28,7 @@ public class ShiroWebFilterAutoConfiguration extends AbstractShiroWebFilterAutoC
 
     @Bean
     @ConditionalOnMissingBean
-    public TokenExtractor tokenExtractor(){
+    public TokenExtractor tokenExtractor() {
         return new DefaultTokenExtractor();
     }
 
@@ -37,6 +38,8 @@ public class ShiroWebFilterAutoConfiguration extends AbstractShiroWebFilterAutoC
         return filters -> {
             logger.info("replace [authc] filter by " + StatelessUserFilter.class);
             filters.put("authc", new StatelessUserFilter(shiroWebProperties, tokenExtractor));
+            logger.info("add {} as [authn] filter ", AuthOnNeedStatelessUserFilter.class);
+            filters.put("authn", new AuthOnNeedStatelessUserFilter(shiroWebProperties, tokenExtractor));
         };
     }
 }

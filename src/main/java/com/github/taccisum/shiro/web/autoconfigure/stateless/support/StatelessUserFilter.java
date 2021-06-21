@@ -34,6 +34,7 @@ public class StatelessUserFilter extends UserFilter {
         this.tokenExtractor = tokenExtractor;
     }
 
+    @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
         if (this.isLoginRequest(request, response)) {
             return true;
@@ -59,6 +60,7 @@ public class StatelessUserFilter extends UserFilter {
         return true;
     }
 
+    @Override
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
         if (request.getAttribute(SHIRO_ERROR_EXCEPTION_ATTRIBUTE) != null) {
             // some exception happen on isAccessAllowed()
