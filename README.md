@@ -236,7 +236,7 @@ public Realm realm(String issuer, JWTManager jwtManager) {
 
 ### 支持自定义 token 获取方式
 
-提供了 header token 和 Authorization 两种获取 token 的实现方式，默认的 StatelessUserFilter 是从 header token 里面获取 token 的。如果要改成从 Authrization
+你可以通过提供 `TokenExtractor` 的 bean 来修改从 http 请求中获取 token 的逻辑，`shiro-starter` 默认提供了 `PowerTkExtractor` 供使用，如下
 
 ```java
 @Bean
@@ -249,6 +249,8 @@ public TokenExtractor tokenExtractor(){
     return bean;
 }
 ```
+
+具体用法请参数 `PowerTkExtractor` 的 Javadoc。
 
 
 ## 配置一览
