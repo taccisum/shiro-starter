@@ -239,10 +239,15 @@ public Realm realm(String issuer, JWTManager jwtManager) {
 提供了 header token 和 Authorization 两种获取 token 的实现方式，默认的 StatelessUserFilter 是从 header token 里面获取 token 的。如果要改成从 Authrization
 
 ```java
-    @Bean
-    public TokenExtractor tokenExtractor(){
-        return new AuthorizationTokenExtractor();
+@Bean
+public TokenExtractor tokenExtractor(){
+    PowerTkExtractor bean = new PowerTkExtractor("token", "tk", "auth");
+    if (mock) {
+        bean.setMock(true);
+        bean.setMockTk("mock_tk");
     }
+    return bean;
+}
 ```
 
 

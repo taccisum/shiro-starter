@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * @author xiangtch - xiangtiancheng@deepexi.com
  * @since 2019/9/12 15:06
+ * @deprecated 建议使用功能更强大的 {@link PowerTkExtractor} 代替
  */
 public class AuthorizationTokenExtractor extends AbstractTokenExtractor {
 
